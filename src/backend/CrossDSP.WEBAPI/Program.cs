@@ -1,9 +1,11 @@
 using CrossDSP.Infrastructure.ServiceDependencyInjection;
+using CrossDSP.WEBAPI.ServiceDependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddGoogleOAuth2(builder.Configuration);
+builder.Services.AddApplicationServices();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

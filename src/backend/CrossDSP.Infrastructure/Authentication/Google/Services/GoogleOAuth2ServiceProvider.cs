@@ -5,7 +5,10 @@ using Microsoft.Extensions.Options;
 
 namespace CrossDSP.Infrastructure.Authentication.Google.Services
 {
-    public interface IGoogleOAuthServiceProvider { }
+    public interface IGoogleOAuthServiceProvider
+    {
+        Task<AuthorizationCodeFlowRedirect> InitiateAuthorizationCodeFlow();
+    }
 
     public class GoogleOAuthServiceProvider : IGoogleOAuthServiceProvider
     {
