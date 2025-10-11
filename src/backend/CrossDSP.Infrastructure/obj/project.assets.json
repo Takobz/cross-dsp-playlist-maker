@@ -1,0 +1,94 @@
+{
+  "version": 3,
+  "targets": {
+    "net8.0": {
+      "CrossDSP.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/CrossDSP.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/CrossDSP.Domain.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "CrossDSP.Domain/1.0.0": {
+      "type": "project",
+      "path": "../CrossDSP.Domain/CrossDSP.Domain.csproj",
+      "msbuildProject": "../CrossDSP.Domain/CrossDSP.Domain.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net8.0": [
+      "CrossDSP.Domain >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "/home/takobz/.nuget/packages/": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "/home/takobz/source-code/cross-dsp-playlist-maker/src/backend/CrossDSP.Infrastructure/CrossDSP.Infrastructure.csproj",
+      "projectName": "CrossDSP.Infrastructure",
+      "projectPath": "/home/takobz/source-code/cross-dsp-playlist-maker/src/backend/CrossDSP.Infrastructure/CrossDSP.Infrastructure.csproj",
+      "packagesPath": "/home/takobz/.nuget/packages/",
+      "outputPath": "/home/takobz/source-code/cross-dsp-playlist-maker/src/backend/CrossDSP.Infrastructure/obj/",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "/home/takobz/.nuget/NuGet/NuGet.Config"
+      ],
+      "originalTargetFrameworks": [
+        "net8.0"
+      ],
+      "sources": {
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "projectReferences": {
+            "/home/takobz/source-code/cross-dsp-playlist-maker/src/backend/CrossDSP.Domain/CrossDSP.Domain.csproj": {
+              "projectPath": "/home/takobz/source-code/cross-dsp-playlist-maker/src/backend/CrossDSP.Domain/CrossDSP.Domain.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      }
+    },
+    "frameworks": {
+      "net8.0": {
+        "targetAlias": "net8.0",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "/home/takobz/.dotnet/sdk/8.0.413/PortableRuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

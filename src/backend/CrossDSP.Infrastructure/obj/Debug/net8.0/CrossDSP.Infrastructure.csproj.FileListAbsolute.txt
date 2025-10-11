@@ -1,0 +1,16 @@
+/home/takobz/source-code/cross-dsp-playlist-maker/src/backend/CrossDSP.Infrastructure/bin/Debug/net8.0/CrossDSP.Infrastructure.deps.json
+/home/takobz/source-code/cross-dsp-playlist-maker/src/backend/CrossDSP.Infrastructure/bin/Debug/net8.0/CrossDSP.Infrastructure.dll
+/home/takobz/source-code/cross-dsp-playlist-maker/src/backend/CrossDSP.Infrastructure/bin/Debug/net8.0/CrossDSP.Infrastructure.pdb
+/home/takobz/source-code/cross-dsp-playlist-maker/src/backend/CrossDSP.Infrastructure/obj/Debug/net8.0/CrossDSP.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+/home/takobz/source-code/cross-dsp-playlist-maker/src/backend/CrossDSP.Infrastructure/obj/Debug/net8.0/CrossDSP.Infrastructure.AssemblyInfoInputs.cache
+/home/takobz/source-code/cross-dsp-playlist-maker/src/backend/CrossDSP.Infrastructure/obj/Debug/net8.0/CrossDSP.Infrastructure.AssemblyInfo.cs
+/home/takobz/source-code/cross-dsp-playlist-maker/src/backend/CrossDSP.Infrastructure/obj/Debug/net8.0/CrossDSP.Infrastructure.csproj.CoreCompileInputs.cache
+/home/takobz/source-code/cross-dsp-playlist-maker/src/backend/CrossDSP.Infrastructure/obj/Debug/net8.0/CrossDSP.Infrastructure.sourcelink.json
+/home/takobz/source-code/cross-dsp-playlist-maker/src/backend/CrossDSP.Infrastructure/obj/Debug/net8.0/CrossDSP.Infrastructure.dll
+/home/takobz/source-code/cross-dsp-playlist-maker/src/backend/CrossDSP.Infrastructure/obj/Debug/net8.0/refint/CrossDSP.Infrastructure.dll
+/home/takobz/source-code/cross-dsp-playlist-maker/src/backend/CrossDSP.Infrastructure/obj/Debug/net8.0/CrossDSP.Infrastructure.pdb
+/home/takobz/source-code/cross-dsp-playlist-maker/src/backend/CrossDSP.Infrastructure/obj/Debug/net8.0/ref/CrossDSP.Infrastructure.dll
+/home/takobz/source-code/cross-dsp-playlist-maker/src/backend/CrossDSP.Infrastructure/bin/Debug/net8.0/CrossDSP.Domain.dll
+/home/takobz/source-code/cross-dsp-playlist-maker/src/backend/CrossDSP.Infrastructure/bin/Debug/net8.0/CrossDSP.Domain.pdb
+/home/takobz/source-code/cross-dsp-playlist-maker/src/backend/CrossDSP.Infrastructure/obj/Debug/net8.0/CrossDSP.Infrastructure.csproj.AssemblyReference.cache
+/home/takobz/source-code/cross-dsp-playlist-maker/src/backend/CrossDSP.Infrastructure/obj/Debug/net8.0/CrossDSP.E2265C3E.Up2Date

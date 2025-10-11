@@ -1,0 +1,39 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "CrossDSP.Infrastructure/1.0.0": {
+        "dependencies": {
+          "CrossDSP.Domain": "1.0.0"
+        },
+        "runtime": {
+          "CrossDSP.Infrastructure.dll": {}
+        }
+      },
+      "CrossDSP.Domain/1.0.0": {
+        "runtime": {
+          "CrossDSP.Domain.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "CrossDSP.Infrastructure/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CrossDSP.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

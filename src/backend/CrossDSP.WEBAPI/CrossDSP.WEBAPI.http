@@ -1,0 +1,6 @@
+@CrossDSP.WEBAPI_HostAddress = http://localhost:5080
+
+GET {{CrossDSP.WEBAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
