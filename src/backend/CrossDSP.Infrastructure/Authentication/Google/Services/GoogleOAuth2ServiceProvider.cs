@@ -1,3 +1,5 @@
+using System.Net;
+using System.Text.Json;
 using CrossDSP.Infrastructure.Authentication.Common.Models;
 using CrossDSP.Infrastructure.Authentication.Google.Options;
 using Microsoft.Extensions.Logging;
@@ -47,8 +49,16 @@ namespace CrossDSP.Infrastructure.Authentication.Google.Services
                 Content = requestQuery
             });
 
+            if (response.StatusCode == HttpStatusCode.RedirectMethod ||
+                response.StatusCode == HttpStatusCode.Redirect)
+            {
+                var authorizeUrl = response?.Headers?.Location?.AbsoluteUri ?? string.Empty;
+                return new AuthorizationCodeFlowRedirect(
+                    authorizeUrl
+                );
+            }
 
-
+            //TODO: add domain exception here that will be handled by exception middleware component
             return new AuthorizationCodeFlowRedirect(
                 string.Empty
             );

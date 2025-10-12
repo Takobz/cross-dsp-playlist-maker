@@ -1,6 +1,7 @@
-@CrossDSP.WEBAPI_HostAddress = http://localhost:5080
+@CrossDSP_WEBAPI_HostAddress = http://localhost:5080
 
-GET {{CrossDSP.WEBAPI_HostAddress}}/weatherforecast/
+GET {{CrossDSP_WEBAPI_HostAddress}}/auth/google-init
 Accept: application/json
 
 ###
+

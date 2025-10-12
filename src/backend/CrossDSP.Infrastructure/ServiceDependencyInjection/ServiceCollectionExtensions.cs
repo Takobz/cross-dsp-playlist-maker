@@ -19,7 +19,6 @@ namespace CrossDSP.Infrastructure.ServiceDependencyInjection
             {
                 var options = new GoogleOAuth2ServiceProviderOptions();
                 googleOAuthSection.Bind(options);
-
                 client.BaseAddress = new Uri(options.TokenEndpoint);
             })
             .ConfigurePrimaryHttpMessageHandler(serviceProvider => {
