@@ -32,7 +32,7 @@ namespace CrossDSP.Infrastructure.Authentication.Google.Services
         public async Task<AuthorizationCodeFlowRedirect> InitiateAuthorizationCodeFlow()
         {
             var optionValues = _oauth2Options.CurrentValue;
-            var requestQuery = new FormUrlEncodedContent(new Dictionary<string, string>
+            var requestQuery = GenerateQueryParameters(new Dictionary<string, string>
             {
                 { "client_id", $"{optionValues.ClientId}" },
                 { "redirect_uri", $"{optionValues.RedirectUri}" },
@@ -40,13 +40,13 @@ namespace CrossDSP.Infrastructure.Authentication.Google.Services
                 { "scope", $"{GoogleOAuth2Defaults.YouTubeScope}" }, //space saparated for multiple scopes
                 { "access_type", $"{GoogleOAuth2Defaults.OnlineAccessType}" },
                 { "state", $"{Guid.NewGuid()}" },
-                { "prompt", $"{GoogleOAuth2Defaults.SelectAccountPrompt}"}
+                //{ "prompt", $"{GoogleOAuth2Defaults.SelectAccountPrompt}"}
             });
 
             var response = await _httpClient.SendAsync(new HttpRequestMessage
             {
-                Method = HttpMethod.Post,
-                Content = requestQuery
+                Method = HttpMethod.Get,
+                RequestUri = new Uri(requestQuery, UriKind.Relative)
             });
 
             if (response.StatusCode == HttpStatusCode.RedirectMethod ||
@@ -62,6 +62,18 @@ namespace CrossDSP.Infrastructure.Authentication.Google.Services
             return new AuthorizationCodeFlowRedirect(
                 string.Empty
             );
+        }
+
+        public static string GenerateQueryParameters(Dictionary<string, string> queryParams)
+        {
+            var fullQueryParams = "?";
+            foreach (var key in queryParams.Keys)
+            {
+                fullQueryParams += $"{key}={queryParams[key]}&";
+            }
+
+            //remove last & in query param
+            return fullQueryParams.Substring(0, fullQueryParams.Length - 1);
         }
     }
 }
