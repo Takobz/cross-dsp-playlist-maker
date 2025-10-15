@@ -2,6 +2,7 @@ using System.Net;
 using System.Text.Json;
 using CrossDSP.Infrastructure.Authentication.Common.Models;
 using CrossDSP.Infrastructure.Authentication.Google.Options;
+using CrossDSP.Infrastructure.Helpers;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -10,6 +11,7 @@ namespace CrossDSP.Infrastructure.Authentication.Google.Services
     public interface IGoogleOAuthServiceProvider
     {
         Task<AuthorizationCodeFlowRedirect> InitiateAuthorizationCodeFlow();
+        Task<DSPAccessToken> GetGoogleAccessToken(string code);
     }
 
     public class GoogleOAuthServiceProvider : IGoogleOAuthServiceProvider
@@ -17,6 +19,11 @@ namespace CrossDSP.Infrastructure.Authentication.Google.Services
         private readonly IOptionsMonitor<GoogleOAuth2ServiceProviderOptions> _oauth2Options;
         private readonly ILogger<GoogleOAuthServiceProvider> _logger;
         private readonly HttpClient _httpClient;
+
+        private readonly JsonSerializerOptions _jsonOptions = new()
+        {
+            PropertyNameCaseInsensitive  = true
+        };
 
         public GoogleOAuthServiceProvider(
             IOptionsMonitor<GoogleOAuth2ServiceProviderOptions> options,
@@ -32,48 +39,51 @@ namespace CrossDSP.Infrastructure.Authentication.Google.Services
         public async Task<AuthorizationCodeFlowRedirect> InitiateAuthorizationCodeFlow()
         {
             var optionValues = _oauth2Options.CurrentValue;
-            var requestQuery = GenerateQueryParameters(new Dictionary<string, string>
+            var requestQuery = new Dictionary<string, string>
             {
                 { "client_id", $"{optionValues.ClientId}" },
                 { "redirect_uri", $"{optionValues.RedirectUri}" },
                 { "response_type", $"{GoogleOAuth2Defaults.CodeResponseType}" },
                 { "scope", $"{GoogleOAuth2Defaults.YouTubeScope}" }, //space saparated for multiple scopes
-                { "access_type", $"{GoogleOAuth2Defaults.OnlineAccessType}" },
+                { "access_type", $"{GoogleOAuth2Defaults.OfflineAccessType}" },
                 { "state", $"{Guid.NewGuid()}" },
-                //{ "prompt", $"{GoogleOAuth2Defaults.SelectAccountPrompt}"}
+                { "prompt", $"{GoogleOAuth2Defaults.SelectAccountPrompt}"}
+            };
+
+            return new AuthorizationCodeFlowRedirect(
+                $"{optionValues.TokenEndpoint}{requestQuery.GenerateQueryParameters()}"
+            );
+        }
+
+        public async Task<DSPAccessToken> GetGoogleAccessToken(string code)
+        {
+            var optionValues = _oauth2Options.CurrentValue;
+            var formContent = new FormUrlEncodedContent(new Dictionary<string, string>
+            {
+                { "code", code },
+                { "client_id", optionValues.ClientId },
+                { "client_secret", optionValues.ClientSecret },
+                { "redirect_uri", optionValues.RedirectUri },
+                { "grant_type", GoogleOAuth2Defaults.AuthorizationCodeGrantType }
             });
 
             var response = await _httpClient.SendAsync(new HttpRequestMessage
             {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri(requestQuery, UriKind.Relative)
+                Method = HttpMethod.Post,
+                Content = formContent
             });
 
-            if (response.StatusCode == HttpStatusCode.RedirectMethod ||
-                response.StatusCode == HttpStatusCode.Redirect)
+            //TODO: don't be optimistic handle failure :).
+            if (response.IsSuccessStatusCode)
             {
-                var authorizeUrl = response?.Headers?.Location?.AbsoluteUri ?? string.Empty;
-                return new AuthorizationCodeFlowRedirect(
-                    authorizeUrl
-                );
+                return JsonSerializer.Deserialize<DSPAccessToken>(
+                    await response.Content.ReadAsStringAsync(),
+                    _jsonOptions
+                )!;
             }
 
-            //TODO: add domain exception here that will be handled by exception middleware component
-            return new AuthorizationCodeFlowRedirect(
-                string.Empty
-            );
-        }
-
-        public static string GenerateQueryParameters(Dictionary<string, string> queryParams)
-        {
-            var fullQueryParams = "?";
-            foreach (var key in queryParams.Keys)
-            {
-                fullQueryParams += $"{key}={queryParams[key]}&";
-            }
-
-            //remove last & in query param
-            return fullQueryParams.Substring(0, fullQueryParams.Length - 1);
+            //TODO: Throw a domain custom exception we can handle :)
+            throw new Exception("Mmmm Food!");
         }
     }
 }

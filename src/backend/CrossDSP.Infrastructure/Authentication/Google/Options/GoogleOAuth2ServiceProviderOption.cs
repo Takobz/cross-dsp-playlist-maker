@@ -17,5 +17,8 @@ namespace CrossDSP.Infrastructure.Authentication.Google.Options
 
         [Required(ErrorMessage = $"TokenEndpoint is need for options: {SectionName}")]
         public string TokenEndpoint { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = $"OAuth2Endpoint is need for options: {SectionName}")]
+        public string OAuth2Endpoint { get; set; } = string.Empty;
     }
 }
