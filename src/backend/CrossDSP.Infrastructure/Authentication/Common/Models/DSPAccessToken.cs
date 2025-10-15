@@ -8,7 +8,7 @@ namespace CrossDSP.Infrastructure.Authentication.Common.Models
         public string AccessToken { get; set; } = string.Empty;
 
         [JsonPropertyName("expires_in")]
-        public int Expires { get; set; }
+        public int ExpiresIn { get; set; }
 
         public string Scope { get; set; } = string.Empty;
 

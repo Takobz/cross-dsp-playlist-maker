@@ -34,8 +34,9 @@ namespace CrossDSP.WEBAPI.Controllers.Auth
         }
 
         [AllowAnonymous]
+        [HttpGet]
         [Route("google-callback")]
-        [ProducesDefaultResponseType(typeof(BaseResponse<>))]
+        [ProducesDefaultResponseType(typeof(BaseResponse<DSPAccessTokenResponse>))]
         public async Task<ActionResult> GoogleCallBack(
             [FromQuery] string code,
             [FromQuery] string state,
@@ -49,9 +50,10 @@ namespace CrossDSP.WEBAPI.Controllers.Auth
                 return BadRequest(); //TODO: refine this....
             }
 
-            //call google service Provider to trade code for access token.
-
-            return Ok(code);
+            var accessToken = await _googleAuthService.GetAccessToken(code);
+            return Ok(new BaseResponse<DSPAccessTokenResponse>(
+                accessToken
+            ));
         }
     }
 }
