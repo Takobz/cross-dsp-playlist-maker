@@ -74,7 +74,6 @@ namespace CrossDSP.Infrastructure.Authentication.Google.Services
             });
 
             //TODO: don't be optimistic handle failure :).
-            //NOT WORKING - Err I get back: Required parameter is missing: response_type
             if (response.IsSuccessStatusCode)
             {
                 return JsonSerializer.Deserialize<DSPAccessToken>(
@@ -84,7 +83,7 @@ namespace CrossDSP.Infrastructure.Authentication.Google.Services
             }
 
             //TODO: Throw a domain custom exception we can handle :)
-            throw new Exception("Mmmm Food!");
+            throw new Exception(await response.Content.ReadAsStringAsync());
         }
     }
 }
