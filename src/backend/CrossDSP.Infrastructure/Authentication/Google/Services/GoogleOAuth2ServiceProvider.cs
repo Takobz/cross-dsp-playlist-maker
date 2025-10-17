@@ -1,4 +1,3 @@
-using System.Net;
 using System.Text.Json;
 using CrossDSP.Infrastructure.Authentication.Common.Models;
 using CrossDSP.Infrastructure.Authentication.Google.Options;

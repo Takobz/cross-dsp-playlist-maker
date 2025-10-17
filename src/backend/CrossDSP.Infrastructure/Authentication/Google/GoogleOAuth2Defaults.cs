@@ -4,6 +4,8 @@ namespace CrossDSP.Infrastructure.Authentication.Google
     {
         public const string GoogleOAuth2AuthenticationScheme = "GoogleOAuth2AuthenticationScheme";
 
+        public const string GoogleOAuth2AccessTokenClaim = "GoogleOAuth2AccessToken";
+
         #region OAuth2.O APIs Constants
 
         public const string YouTubeScope = "https://www.googleapis.com/auth/youtube";

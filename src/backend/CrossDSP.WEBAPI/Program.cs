@@ -5,7 +5,7 @@ using CrossDSP.WEBAPI.ServiceDependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddGoogleOAuth2(builder.Configuration);
+builder.Services.AddGoogleServices(builder.Configuration);
 builder.Services.AddApplicationServices();
 
 builder.Services.AddControllers()
