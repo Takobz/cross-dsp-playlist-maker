@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Http;
+
 namespace CrossDSP.Infrastructure.Helpers
 {
     public static class DictionaryHelper
@@ -12,6 +14,20 @@ namespace CrossDSP.Infrastructure.Helpers
 
             //remove last & in query param
             return fullQueryParams.Substring(0, fullQueryParams.Length - 1);
+        }
+
+        public static string ExtractBearerTokenFromHeader(this IHeaderDictionary requestHeader) 
+        {
+            if (requestHeader.TryGetValue("Authorization", out var accessTokenWithBearerPrefixStringValue) &&
+                !string.IsNullOrEmpty(accessTokenWithBearerPrefixStringValue)
+            )
+            {
+                //remove prefix "Bearer "
+                var accessTokenWithBearerPrefix = accessTokenWithBearerPrefixStringValue.First();
+                return accessTokenWithBearerPrefix![7..];
+            }
+
+            return string.Empty;
         }
     }
 }

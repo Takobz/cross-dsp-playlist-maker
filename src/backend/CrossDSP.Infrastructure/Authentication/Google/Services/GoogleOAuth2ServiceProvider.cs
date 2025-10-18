@@ -43,7 +43,7 @@ namespace CrossDSP.Infrastructure.Authentication.Google.Services
                 { "client_id", $"{optionValues.ClientId}" },
                 { "redirect_uri", $"{optionValues.RedirectUri}" },
                 { "response_type", $"{GoogleOAuth2Defaults.CodeResponseType}" },
-                { "scope", $"{GoogleOAuth2Defaults.YouTubeScope}" }, //space saparated for multiple scopes
+                { "scope", $"{GoogleOAuth2Defaults.YouTubeForceSSLScope}" }, //space saparated for multiple scopes
                 { "access_type", $"{GoogleOAuth2Defaults.OfflineAccessType}" },
                 { "state", $"{Guid.NewGuid()}" },
                 { "prompt", $"{GoogleOAuth2Defaults.SelectAccountPrompt}"}

@@ -1,4 +1,5 @@
 using System.Text.Json;
+using CrossDSP.Infrastructure.Authentication.Google;
 using CrossDSP.Infrastructure.ServiceDependencyInjection;
 using CrossDSP.WEBAPI.ServiceDependencyInjection;
 
@@ -17,6 +18,21 @@ builder.Services.AddControllers()
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddAuthentication()
+    .AddGoogleAuthentication();
+
+builder.Services.AddAuthorization(authROptions =>
+{
+    /*
+    * Don't really need this but make authorization granular and I love it
+    */
+    authROptions.AddPolicy(GoogleOAuth2Defaults.HasGoogleAccessTokenPolicy, p =>
+    {
+        p.RequireClaim(GoogleOAuth2Defaults.GoogleOAuth2AccessTokenClaim);
+    });
+});
 
 var app = builder.Build();
 
@@ -29,6 +45,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

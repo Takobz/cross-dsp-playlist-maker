@@ -1,7 +1,19 @@
 @CrossDSP_WEBAPI_HostAddress = http://localhost:5080
 
+# after authorizing copy the access token from the browser and paste it below
+@AccessToken = YOUR_ACCESS_TOKEN_HERE
+
+# @name GoogleInitiateAuthorization
+
 GET {{CrossDSP_WEBAPI_HostAddress}}/auth/google-init
 Accept: application/json
 
+# copy the results of GoogleInitiateAuthorization and paste in a browser to authorize.
+
 ###
 
+# @name GoogleSearchYouTube
+
+GET {{CrossDSP_WEBAPI_HostAddress}}/google/search?query=drake
+Authorization: Bearer {{AccessToken}}
+Accept: application/json
