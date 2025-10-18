@@ -3,6 +3,7 @@ using CrossDSP.Infrastructure.Authentication.Google.Options;
 using CrossDSP.Infrastructure.Authentication.Google.Services;
 using CrossDSP.Infrastructure.HttpClientInfra.DelegatingHandlers;
 using CrossDSP.Infrastructure.Services.Google;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -25,6 +26,8 @@ namespace CrossDSP.Infrastructure.ServiceDependencyInjection
                 client.BaseAddress = new Uri(options.OAuth2Endpoint);
             });
 
+            services.AddTransient<YouTubeResourceDelegatingHandler>();
+
             services.AddHttpClient<IYouTubeResourceService, YouTubeResourceService>(client =>
             {
                 client.BaseAddress = new Uri(options.YouTubeResourceEndpoint);
@@ -32,6 +35,16 @@ namespace CrossDSP.Infrastructure.ServiceDependencyInjection
             .AddHttpMessageHandler<YouTubeResourceDelegatingHandler>();
 
             return services;
+        }
+
+        public static void AddGoogleAuthentication(this AuthenticationBuilder authBuilder)
+        {
+            authBuilder.AddScheme<GoogleOAuthSchemeOptions, GoogleOAuth2Handler>(
+                GoogleOAuth2Defaults.GoogleOAuth2AuthenticationScheme,
+                options => { }
+            );
+
+            
         }
     }
 }
