@@ -16,8 +16,8 @@ The following software(s) are needed to get the app running in docker.
 
 - [docker cli](https://docs.docker.com/engine/install/) a containerization program.
 - [docker compose](https://docs.docker.com/compose/install/standalone/) 
-- Google OAuth App - Please see [guide]() on how to configure your OAuth app correctly for this application.
-- Spotify OAuth App - Please see [guide]() on how to configure your OAuth app correctly for this application. 
+- Google OAuth App - Please see [guide](./oauth-guides/GOOGLE_OAUTH_GUIDE.md) on how to configure your OAuth app correctly for this application.
+<!-- - Spotify OAuth App - Please see [guide]() on how to configure your OAuth app correctly for this application.  -->
 
 This guide has a how-to on how you can configure your OAuth apps but it is worth reading the above links to understand what they do, it's not the aim of this guide to explain what OAuth is.
 

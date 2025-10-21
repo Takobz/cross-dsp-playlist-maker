@@ -5,5 +5,5 @@ Currently supported platforms:
 Many more integrations coming.
 
 ## Documentation
-- Getting started, [user guide]()
-- Getting started, [developer guide]()
+- Getting started, [user guide](./docs/getting-started/USER_GUIDE.md)
+- Getting started, [developer guide](./docs/getting-started/DEVELOPER_GUIDE.md)
