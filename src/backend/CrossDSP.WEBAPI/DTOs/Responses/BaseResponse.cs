@@ -7,12 +7,18 @@ namespace CrossDSP.WEBAPI.DTOs.Responses
             Data = dtoData;
         }
 
+        public BaseResponse(IEnumerable<TDto> dtos)
+        {
+            DataItems = dtos;
+        }
+
         public BaseResponse(IEnumerable<string> errorMessages)
         {
             ErrorMessages = errorMessages;
         }
 
         public TDto? Data { get; internal set; } = default;
+        public IEnumerable<TDto>? DataItems { get; internal set; } = default;
         public IEnumerable<string> ErrorMessages { get; internal set; } = [];
     }
 

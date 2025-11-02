@@ -3,6 +3,22 @@ namespace CrossDSP.Infrastructure.Services.Google.Models
     public class YouTubeSearchResult
     {
         public string Kind { get; set; } = string.Empty;
+        public string Etag { get; set; } = string.Empty;
+        public string NextPageToken { get; set; } = string.Empty;
+        public string RegionCode { get; set; } = string.Empty;
+        public YouTubeSearchPageInfo PageInfo { get; set; }  = new();
+        public List<YouTubeSearchItem> Items { get; set; } = [];
+    }
+
+    public class YouTubeSearchPageInfo
+    {
+        public int TotalResults { get; set; }
+        public int ResultsPerPage { get; set; }
+    }
+
+    public class YouTubeSearchItem
+    {
+        public string Kind { get; set; } = string.Empty;
 
         public string Etag { get; set; } = string.Empty;
 
