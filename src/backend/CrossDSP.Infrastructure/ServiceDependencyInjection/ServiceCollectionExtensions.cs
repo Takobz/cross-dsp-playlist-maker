@@ -43,8 +43,6 @@ namespace CrossDSP.Infrastructure.ServiceDependencyInjection
                 GoogleOAuth2Defaults.GoogleOAuth2AuthenticationScheme,
                 options => { }
             );
-
-            
         }
     }
 }
