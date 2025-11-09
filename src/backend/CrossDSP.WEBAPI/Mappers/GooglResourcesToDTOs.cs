@@ -1,3 +1,4 @@
+using CrossDSP.Infrastructure.Helpers;
 using CrossDSP.Infrastructure.Services.Google.Models;
 using CrossDSP.WEBAPI.DTOs.Responses;
 
@@ -18,13 +19,10 @@ namespace CrossDSP.WEBAPI.Mappers
 
             return results.Items.Where(item => item.Id.Kind == GoogleConstants.VideoResourceKind).Select(item =>
             {
-                var mainArtistName = item.Snippet.ChannelTitle.ToUpper();
-                if (mainArtistName.Contains(
-                    "- TOPIC",
-                    StringComparison.CurrentCultureIgnoreCase)
-                )
+                var mainArtistName = item.Snippet.ChannelTitle;
+                if (mainArtistName.HasTopicOrVevoSuffix())
                 {
-                    mainArtistName = mainArtistName.ToUpper().Replace("- TOPIC", "");
+                    mainArtistName = mainArtistName.RemoveTopicOrVevoSuffix();
                 }
 
                 return new SongSearchResponse(

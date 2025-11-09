@@ -44,11 +44,13 @@ namespace CrossDSP.Infrastructure.HttpClientInfra.DelegatingHandlers
                 _httpClient.DefaultRequestHeaders.Add("Authorization", $"Basic {base64ClientCredentials}");
 
                 var response = await _httpClient.SendAsync(new HttpRequestMessage
-                {
-                    Content = accessTokenRequestParams,
-                    RequestUri = new Uri($"{_options.Value.TokenEndpoint}/api/token"),
-                    Method = HttpMethod.Post
-                });
+                    {
+                        Content = accessTokenRequestParams,
+                        RequestUri = new Uri($"{_options.Value.SpotifyAuthServerEndpoint}/api/token"),
+                        Method = HttpMethod.Post
+                    },
+                    cancellationToken
+                );
 
                 if (response.IsSuccessStatusCode)
                 {
