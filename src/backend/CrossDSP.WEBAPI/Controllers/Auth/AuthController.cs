@@ -1,3 +1,5 @@
+using CrossDSP.Infrastructure.Authentication.Spotify;
+using CrossDSP.Infrastructure.Authentication.Spotify.Services;
 using CrossDSP.WEBAPI.DTOs.Responses;
 using CrossDSP.WEBAPI.Services.Google;
 using Microsoft.AspNetCore.Authorization;
@@ -11,14 +13,17 @@ namespace CrossDSP.WEBAPI.Controllers.Auth
     {
         private readonly ILogger<AuthController> _logger;
         private readonly IGoogleAuthService _googleAuthService;
+        private readonly ISpotifyOAuthProvider _spotifyAuthProvider;
 
         public AuthController(
             ILogger<AuthController> logger,
-            IGoogleAuthService googleAuthService
+            IGoogleAuthService googleAuthService,
+            ISpotifyOAuthProvider spotifyOAuthProvider
         )
         {
             _logger = logger;
             _googleAuthService = googleAuthService;
+            _spotifyAuthProvider = spotifyOAuthProvider;
         }
 
         [HttpGet]
@@ -53,6 +58,22 @@ namespace CrossDSP.WEBAPI.Controllers.Auth
             var accessToken = await _googleAuthService.GetAccessToken(code);
             return Ok(new BaseResponse<DSPAccessTokenResponse>(
                 accessToken
+            ));
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("spotify-init")]
+        [ProducesResponseType(typeof(BaseResponse<InitiateAutorizeResponse>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<BaseResponse<InitiateAutorizeResponse>>> InitiateSpotifyAuthorize()
+        {
+            var scopes = SpotifyOAuthDefaults.CreateFavoritesPlaylistSpotifyScopes();
+            var redirectUrl = await _spotifyAuthProvider.InitiateAuthorizationRequest(
+                scopes
+            );
+
+            return Ok(new BaseResponse<InitiateAutorizeResponse>(
+                new InitiateAutorizeResponse(redirectUrl)
             ));
         }
     }

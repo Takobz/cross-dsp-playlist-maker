@@ -2,6 +2,7 @@ using CrossDSP.Infrastructure.Authentication.Google;
 using CrossDSP.Infrastructure.Authentication.Google.Options;
 using CrossDSP.Infrastructure.Authentication.Google.Services;
 using CrossDSP.Infrastructure.Authentication.Spotify.Options;
+using CrossDSP.Infrastructure.Authentication.Spotify.Services;
 using CrossDSP.Infrastructure.HttpClientInfra.DelegatingHandlers;
 using CrossDSP.Infrastructure.Services.Google;
 using CrossDSP.Infrastructure.Services.Spotify;
@@ -65,6 +66,11 @@ namespace CrossDSP.Infrastructure.ServiceDependencyInjection
                 client.BaseAddress = new Uri($"{options.SpotifyResourceEndpoint}/search");
             })
             .AddHttpMessageHandler<SpotifyBasicAccessTokenHandler>();
+
+            services.AddHttpClient<ISpotifyOAuthProvider, SpotifyOAuthProvider>(client =>
+            {
+                client.BaseAddress = new Uri($"{options.SpotifyAuthServerEndpoint}");
+            });
 
             return services;
         }
