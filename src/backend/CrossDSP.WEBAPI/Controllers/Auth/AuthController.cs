@@ -76,5 +76,31 @@ namespace CrossDSP.WEBAPI.Controllers.Auth
                 new InitiateAutorizeResponse(redirectUrl)
             ));
         }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("spotify-callback")]
+        [ProducesDefaultResponseType(typeof(BaseResponse<DSPAccessTokenResponse>))]
+        public async Task<ActionResult> SpotifyCallback(
+            [FromQuery] string code,
+            [FromQuery] string state
+        )
+        {
+            //TODO validate state - get from Cache??
+
+            if (string.IsNullOrEmpty(code))
+            {
+                return BadRequest(); //TODO: refine this....
+            }
+
+            var accessToken = await _spotifyAuthProvider.GetUserAccessToken(code);
+            return Ok(new BaseResponse<DSPAccessTokenResponse>(
+                new DSPAccessTokenResponse(
+                    accessToken.AccessToken,
+                    accessToken.ExpiresIn,
+                    accessToken.RefreshToken
+                )
+            ));
+        }
     }
 }

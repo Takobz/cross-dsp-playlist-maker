@@ -28,5 +28,12 @@ namespace CrossDSP.WEBAPI.Controllers.Spotify
             var responses = result.ToSongSearchResponses();
             return Ok(new BaseResponse<SongSearchResponse>(responses));
         }
+
+        [HttpGet]
+        [Route("user/playlists")]
+        public async Task<IActionResult> GetUserPlaylists()
+        {
+            return Ok();
+        }
     }
 }

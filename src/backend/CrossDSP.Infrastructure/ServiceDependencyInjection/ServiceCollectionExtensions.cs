@@ -70,6 +70,13 @@ namespace CrossDSP.Infrastructure.ServiceDependencyInjection
             services.AddHttpClient<ISpotifyOAuthProvider, SpotifyOAuthProvider>(client =>
             {
                 client.BaseAddress = new Uri($"{options.SpotifyAuthServerEndpoint}");
+            })
+            .ConfigurePrimaryHttpMessageHandler(serviceProvider =>
+            {
+                return new HttpClientHandler
+                {
+                    AllowAutoRedirect = false
+                };
             });
 
             return services;
