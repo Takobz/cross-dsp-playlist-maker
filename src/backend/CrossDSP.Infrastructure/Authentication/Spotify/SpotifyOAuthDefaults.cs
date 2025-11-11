@@ -2,6 +2,10 @@ namespace CrossDSP.Infrastructure.Authentication.Spotify
 {
     public static class SpotifyOAuthDefaults
     {
+        public const string AuthenticationScheme = "SpotifyAuthentication";
+
+        
+
         public const string SpotifyBasicAccessTokenCacheKey = "spotify_app_basic_access_token";
 
         public const string PlayListModifyPublic = "playlist-modify-public";
