@@ -1,6 +1,7 @@
 using CrossDSP.Infrastructure.Authentication.Google;
 using CrossDSP.Infrastructure.Authentication.Google.Options;
 using CrossDSP.Infrastructure.Authentication.Google.Services;
+using CrossDSP.Infrastructure.Authentication.Spotify;
 using CrossDSP.Infrastructure.Authentication.Spotify.Options;
 using CrossDSP.Infrastructure.Authentication.Spotify.Services;
 using CrossDSP.Infrastructure.HttpClientInfra.DelegatingHandlers;
@@ -14,6 +15,22 @@ namespace CrossDSP.Infrastructure.ServiceDependencyInjection
 {
     public static class ServiceCollectionExtensions
     {
+        public static IServiceCollection AddInfrastructureDependencies(
+            this IServiceCollection services
+        )
+        {
+            services.AddTransient<YouTubeResourceDelegatingHandler>();
+            services.AddTransient<SpotifyBasicAccessTokenHandler>();
+            services.AddTransient<LoggingDelegatingHandler>();
+            services.AddTransient<ExtractingBearerTokenDelegatingHandler>();
+
+            //needed by spotify for cashing basic token
+            services.AddMemoryCache();
+            services.AddHttpContextAccessor();
+
+            return services;
+        }
+
         public static IServiceCollection AddGoogleServices(
             this IServiceCollection services,
             IConfiguration configuration
@@ -27,24 +44,27 @@ namespace CrossDSP.Infrastructure.ServiceDependencyInjection
             services.AddHttpClient<IGoogleOAuthServiceProvider, GoogleOAuthServiceProvider>(client =>
             {
                 client.BaseAddress = new Uri(options.OAuth2Endpoint);
-            });
+            })
+            .AddHttpMessageHandler<LoggingDelegatingHandler>();
 
-            services.AddTransient<YouTubeResourceDelegatingHandler>();
             services.AddHttpClient<IYouTubeResourceService, YouTubeResourceService>(client =>
             {
                 client.BaseAddress = new Uri(options.YouTubeResourceEndpoint);
             })
+            .AddHttpMessageHandler<LoggingDelegatingHandler>()
             .AddHttpMessageHandler<YouTubeResourceDelegatingHandler>();
 
             return services;
         }
 
-        public static void AddGoogleAuthentication(this AuthenticationBuilder authBuilder)
+        public static AuthenticationBuilder AddGoogleAuthentication(this AuthenticationBuilder authBuilder)
         {
             authBuilder.AddScheme<GoogleOAuthSchemeOptions, GoogleOAuth2Handler>(
                 GoogleOAuth2Defaults.GoogleOAuth2AuthenticationScheme,
                 options => { }
             );
+
+            return authBuilder;
         }
 
         public static IServiceCollection AddSpotifyServices(
@@ -57,20 +77,26 @@ namespace CrossDSP.Infrastructure.ServiceDependencyInjection
             spotifyOptionSection.Bind(options);
 
             services.Configure<SpotifyOptions>(spotifyOptionSection);
-
-            //we cache the basic access token for the API using memory cache.
-            services.AddMemoryCache();
-            services.AddTransient<SpotifyBasicAccessTokenHandler>();
+            
             services.AddHttpClient<ISpotifySearchService, SpotifySearchService>(client =>
             {
                 client.BaseAddress = new Uri($"{options.SpotifyResourceEndpoint}/search");
             })
+            .AddHttpMessageHandler<LoggingDelegatingHandler>()
             .AddHttpMessageHandler<SpotifyBasicAccessTokenHandler>();
+
+            services.AddHttpClient<ISpotifyUserService, SpotifyUserService>(client =>
+            {
+                client.BaseAddress = new Uri($"{options.SpotifyResourceEndpoint}/me");
+            })
+            .AddHttpMessageHandler<LoggingDelegatingHandler>()
+            .AddHttpMessageHandler<ExtractingBearerTokenDelegatingHandler>();
 
             services.AddHttpClient<ISpotifyOAuthProvider, SpotifyOAuthProvider>(client =>
             {
                 client.BaseAddress = new Uri($"{options.SpotifyAuthServerEndpoint}");
             })
+            .AddHttpMessageHandler<LoggingDelegatingHandler>()
             .ConfigurePrimaryHttpMessageHandler(serviceProvider =>
             {
                 return new HttpClientHandler
@@ -80,6 +106,16 @@ namespace CrossDSP.Infrastructure.ServiceDependencyInjection
             });
 
             return services;
+        }
+
+        public static AuthenticationBuilder AddSpotifyAuthentication(this AuthenticationBuilder authBuilder)
+        {
+            authBuilder.AddScheme<SpotifyOAuthSchemeOptions, SpotifyAuthenticationHandler>(
+                SpotifyOAuthDefaults.AuthenticationScheme,
+                options => { }
+            );
+
+            return authBuilder;
         }
     }
 }

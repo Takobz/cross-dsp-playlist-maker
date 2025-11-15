@@ -4,6 +4,10 @@ namespace CrossDSP.Infrastructure.Authentication.Spotify
     {
         public const string AuthenticationScheme = "SpotifyAuthentication";
 
+        public const string SpotifyAccessTokenClaimKey = "SpotifyAccessToken";
+        public const string SpotifyUserClaimKey = "SpotifyUser";
+        public const string SpotifyUserEntityIdClaimKey = "SpotifyUserEntityId";
+
         
 
         public const string SpotifyBasicAccessTokenCacheKey = "spotify_app_basic_access_token";
