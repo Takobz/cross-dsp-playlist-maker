@@ -67,7 +67,7 @@ namespace CrossDSP.WEBAPI.Controllers.Auth
         [ProducesResponseType(typeof(BaseResponse<InitiateAutorizeResponse>), StatusCodes.Status200OK)]
         public async Task<ActionResult<BaseResponse<InitiateAutorizeResponse>>> InitiateSpotifyAuthorize()
         {
-            var scopes = SpotifyOAuthDefaults.CreateFavoritesPlaylistSpotifyScopes();
+            var scopes = SpotifyOAuthDefaults.UserPublicPlaylistSpotifyScopes();
             var redirectUrl = await _spotifyAuthProvider.InitiateAuthorizationRequest(
                 scopes
             );

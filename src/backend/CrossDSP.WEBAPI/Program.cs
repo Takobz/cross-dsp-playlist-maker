@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using CrossDSP.Infrastructure.Authentication.Google;
+using CrossDSP.Infrastructure.Authentication.Spotify;
 using CrossDSP.Infrastructure.ServiceDependencyInjection;
 using CrossDSP.WEBAPI.ServiceDependencyInjection;
 
@@ -27,16 +28,20 @@ builder.Services.AddAuthentication()
     .AddGoogleAuthentication()
     .AddSpotifyAuthentication();
 
-builder.Services.AddAuthorization(authROptions =>
-{
-    /*
-    * Don't really need this but make authorization granular and I love it
-    */
-    authROptions.AddPolicy(GoogleOAuth2Defaults.HasGoogleAccessTokenPolicy, p =>
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy(GoogleOAuth2Defaults.HasGoogleAccessTokenPolicy, p =>
     {
         p.RequireClaim(GoogleOAuth2Defaults.GoogleOAuth2AccessTokenClaim);
-    });
-});
+    }
+);
+
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy(SpotifyOAuthDefaults.SpotifyUserPolicy, p =>
+    {
+        p.RequireClaim(SpotifyOAuthDefaults.SpotifyAccessTokenClaimKey);
+        p.RequireClaim(SpotifyOAuthDefaults.SpotifyUserEntityIdClaimKey);
+    }
+);
 
 var app = builder.Build();
 

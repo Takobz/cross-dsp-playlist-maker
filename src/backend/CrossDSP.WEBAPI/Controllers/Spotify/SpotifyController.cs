@@ -1,3 +1,4 @@
+using CrossDSP.Infrastructure.Authentication.Spotify;
 using CrossDSP.Infrastructure.Services.Spotify;
 using CrossDSP.WEBAPI.DTOs.Responses;
 using CrossDSP.WEBAPI.Mappers;
@@ -22,7 +23,8 @@ namespace CrossDSP.WEBAPI.Controllers.Spotify
         [AllowAnonymous]
         public async Task<IActionResult> SearchSongByName(
             [FromQuery(Name = "song_name")] string songName,
-            [FromQuery(Name = "artist_name")] string? artistName)
+            [FromQuery(Name = "artist_name")] string? artistName
+        )
         {
             var result = await _spotifySearch.SearchTrackByName(songName, artistName);
             var responses = result.ToSongSearchResponses();
@@ -31,6 +33,10 @@ namespace CrossDSP.WEBAPI.Controllers.Spotify
 
         [HttpGet]
         [Route("user/playlists")]
+        [Authorize(
+            AuthenticationSchemes = SpotifyOAuthDefaults.AuthenticationScheme,
+            Policy = SpotifyOAuthDefaults.SpotifyUserPolicy)
+        ]
         public async Task<IActionResult> GetUserPlaylists()
         {
             return Ok();

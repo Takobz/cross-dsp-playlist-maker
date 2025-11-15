@@ -35,7 +35,7 @@ namespace CrossDSP.Infrastructure.Authentication.Spotify.Services
                 { "client_id", _spotifyOptions.ClientId },
                 { "response_type", "code" },
                 { "redirect_uri", _spotifyOptions.RedirectUri },
-                { "scopIe", scopes },
+                { "scope", scopes },
                 { "state", $"{Guid.NewGuid()}" },
                 { "show_dialog", $"{true}" },
             };

@@ -19,7 +19,10 @@ namespace CrossDSP.Infrastructure.HttpClientInfra.DelegatingHandlers
         )
         {
             //Before Request
-            var requestContent = await request.Content?.ReadAsStringAsync(cancellationToken)! ?? string.Empty;
+            var requestContent = request.Content != null ? 
+                await request.Content.ReadAsStringAsync(cancellationToken)! :
+                string.Empty;
+
             _logger.LogInformation(
                 "Sending Request HTTP Request {ServiceRequesturi}, {ServiceHttpMethod}, {RequestBody}",
                 request.RequestUri,
@@ -31,7 +34,10 @@ namespace CrossDSP.Infrastructure.HttpClientInfra.DelegatingHandlers
             var response = await base.SendAsync(request, cancellationToken);
 
             //Response from other handlers / internet
-            var responseContent = await response.Content?.ReadAsStringAsync(cancellationToken)! ?? string.Empty;
+            var responseContent = response.Content != null ? 
+                await response.Content?.ReadAsStringAsync(cancellationToken)! : 
+                string.Empty;
+            
             if (response.IsSuccessStatusCode)
             {
                 _logger.LogInformation(
