@@ -21,5 +21,22 @@ namespace CrossDSP.WEBAPI.Mappers
                 );
             });
         }
+
+        public static IEnumerable<PlaylistResponse> ToPlaylistResponses(
+            this IEnumerable<SpotifyPlaylist> playlists
+        )
+        {
+            if (!playlists.Any()) return [];
+
+            return playlists.Select(playlist =>
+            {
+                return new PlaylistResponse(
+                    dsp: SpotifyConstants.Spotify,
+                    id: playlist.EntityId,
+                    name: playlist.Name,
+                    description: playlist.Description
+                );
+            });
+        }
     }
 }

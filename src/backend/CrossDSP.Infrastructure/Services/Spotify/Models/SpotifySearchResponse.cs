@@ -2,7 +2,11 @@ using System.Text.Json.Serialization;
 
 namespace CrossDSP.Infrastructure.Services.Spotify.Models
 {
-    public record SpotifySearchResponse<T> where T : SpotifyEntity
+    /// <summary>
+    /// Wrapper class that has a list of Spotify items.
+    /// </summary>
+    /// <typeparam name="T">Type of items that will be returned spotify</typeparam>
+    public record SpotifyItemsResponse<T> where T : SpotifyEntity
     {
         [JsonPropertyName("href")]
         public string HRef { get; init; } = string.Empty;

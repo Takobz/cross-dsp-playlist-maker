@@ -1,4 +1,5 @@
 using CrossDSP.Infrastructure.Authentication.Spotify;
+using CrossDSP.Infrastructure.Helpers;
 using CrossDSP.Infrastructure.Services.Spotify;
 using CrossDSP.WEBAPI.DTOs.Responses;
 using CrossDSP.WEBAPI.Mappers;
@@ -12,10 +13,15 @@ namespace CrossDSP.WEBAPI.Controllers.Spotify
     public class SpotifyController : ControllerBase
     {
         private readonly ISpotifySearchService _spotifySearch;
+        private readonly ISpotifyPlaylistService _spotifyPlaylistService;
 
-        public SpotifyController(ISpotifySearchService spotifySearch)
+        public SpotifyController(
+            ISpotifySearchService spotifySearch,
+            ISpotifyPlaylistService spotifyPlaylistService
+        )
         {
             _spotifySearch = spotifySearch;
+            _spotifyPlaylistService = spotifyPlaylistService;
         }
 
         [HttpGet]
@@ -39,7 +45,18 @@ namespace CrossDSP.WEBAPI.Controllers.Spotify
         ]
         public async Task<IActionResult> GetUserPlaylists()
         {
-            return Ok();
+            var spotifyUserId = HttpContext.User.GetClaimValueByName(
+                SpotifyOAuthDefaults.SpotifyUserEntityIdClaimKey
+            );
+
+            var result = await _spotifyPlaylistService.GetUserPlaylists(spotifyUserId);
+            if (result.HasData)
+            {
+               var responses = result.Data.ToPlaylistResponses();
+               return Ok(new BaseResponse<PlaylistResponse>(responses)); 
+            }
+
+            return Ok(new BaseResponse<PlaylistResponse>(Enumerable.Empty<PlaylistResponse>()));
         }
     }
 }

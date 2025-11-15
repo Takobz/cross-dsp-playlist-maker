@@ -22,7 +22,5 @@ namespace CrossDSP.Infrastructure.Authentication.Spotify
             $"{PlayListModifyPublic} {UserLibraryRead} {UserReadEmail}";
 
         #endregion
-
-        
     }
 }

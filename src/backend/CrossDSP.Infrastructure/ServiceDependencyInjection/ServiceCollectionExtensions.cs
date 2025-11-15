@@ -92,6 +92,13 @@ namespace CrossDSP.Infrastructure.ServiceDependencyInjection
             .AddHttpMessageHandler<LoggingDelegatingHandler>()
             .AddHttpMessageHandler<ExtractingBearerTokenDelegatingHandler>();
 
+            services.AddHttpClient<ISpotifyPlaylistService, SpotifyPlaylistService>(client =>
+            {
+               client.BaseAddress = new Uri($"{options.SpotifyResourceEndpoint}"); 
+            })
+            .AddHttpMessageHandler<LoggingDelegatingHandler>()
+            .AddHttpMessageHandler<ExtractingBearerTokenDelegatingHandler>();
+
             services.AddHttpClient<ISpotifyOAuthProvider, SpotifyOAuthProvider>(client =>
             {
                 client.BaseAddress = new Uri($"{options.SpotifyAuthServerEndpoint}");
