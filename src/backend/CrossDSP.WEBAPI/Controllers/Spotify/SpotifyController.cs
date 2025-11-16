@@ -55,13 +55,15 @@ namespace CrossDSP.WEBAPI.Controllers.Spotify
                 ClaimTypes.Name
             );
 
-            return Ok(new BaseResponse<DSPUserResponse>(
+            var response = await Task.FromResult(new BaseResponse<DSPUserResponse>(
                 new DSPUserResponse(
                     dsp: SpotifyConstants.Spotify,
                     id: spotifyUserId,
                     username: spotifyUserName
                 )
             ));
+
+            return Ok(response);
         }
 
         [HttpGet]
@@ -84,18 +86,29 @@ namespace CrossDSP.WEBAPI.Controllers.Spotify
             return Ok(new BaseResponse<PlaylistResponse>(Enumerable.Empty<PlaylistResponse>()));
         }
 
-        [HttpGet]
-        [Route("user/{userId}/playlists/{playlistId}")]
+        [HttpPost]
+        [Route("playlists/{playlistId}")]
         [Authorize(
             AuthenticationSchemes = SpotifyOAuthDefaults.AuthenticationScheme,
             Policy = SpotifyOAuthDefaults.SpotifyUserPolicy)
         ]
         public async Task<IActionResult> AddTracksToPlaylist(
-            string userId,
-            string playlistId
+            string playlistId,
+            [FromBody] IEnumerable<string> trackIds
         )
         {
-            return Ok();
+            var response = await _spotifyPlaylistService.AddItemsToPlaylist(
+                playlistId,
+                trackIds
+            );
+
+            var isSuccess = 
+                response.HasData &&
+                !string.IsNullOrEmpty(response.Data!.SnapshotId);
+
+            return Ok(new BaseResponse<SuccessResponse>(
+                new SuccessResponse(isSuccess)
+            ));
         }
     }
 }

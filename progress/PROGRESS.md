@@ -4,7 +4,7 @@ Who needs a sprint board for their own personal project - nobody baby!!
 
 ## What I am doing Now
 
-- Add Tracks to a user's spotify playlist
+- Initial UI project - React/Next ?
 
 ## What I have done
 
@@ -15,3 +15,4 @@ Who needs a sprint board for their own personal project - nobody baby!!
 - Get user details (id, profile) from spotify apis
 - Get user playlist after retrieving id
 - Get user endpoint to get id.
+- Add Tracks to a user's spotify playlist

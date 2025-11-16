@@ -47,5 +47,19 @@ namespace CrossDSP.Infrastructure.Helpers
             var result = Regex.Replace(input, Pattern, "", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
             return result.TrimEnd();
         }
+
+        /// <summary>
+        ///  Turns id into spotify uri format
+        /// </summary>
+        /// <param name="items">spotify track ids</param>
+        /// <returns>list of spotify track uri for each id</returns>
+        public static IEnumerable<string> ToSpotifyTrackUris(
+            this IEnumerable<string> items
+        )
+        {
+            if (!items.Any()) return [];
+
+            return items.Select(trackId => $"spotify:track:{trackId}");
+        }
     }
 }

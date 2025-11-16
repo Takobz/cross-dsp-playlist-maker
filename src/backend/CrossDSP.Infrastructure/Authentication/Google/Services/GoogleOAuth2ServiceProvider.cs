@@ -49,8 +49,10 @@ namespace CrossDSP.Infrastructure.Authentication.Google.Services
                 { "prompt", $"{GoogleOAuth2Defaults.SelectAccountPrompt}"}
             };
 
+            var authorizeUrl = await Task.FromResult($"{optionValues.TokenEndpoint}{requestQuery.GenerateQueryParameters()}");
+
             return new AuthorizationCodeFlowRedirect(
-                $"{optionValues.TokenEndpoint}{requestQuery.GenerateQueryParameters()}"
+                authorizeUrl
             );
         }
 
