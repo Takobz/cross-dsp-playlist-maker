@@ -11,23 +11,11 @@ namespace CrossDSP.WEBAPI.DTOs.Responses
         {
             MainArtistName = mainArtistName;
             SongTitle = songTitle;
-            SongId = new SongId(dsp, dspSongId);
+            SongId = new DSPId(dsp, dspSongId);
         }
 
         public string MainArtistName { get; internal set; }
         public string SongTitle { get; internal set; }
-        public SongId SongId { get; internal set; }
-    }
-
-    public class SongId
-    {
-        public SongId(string dsp, string dspSongId)
-        {
-            DSP = dsp;
-            DSPSongId = dspSongId;
-        }
-
-        public string DSP { get; internal set; }
-        public string DSPSongId { get; internal set; } 
+        public DSPId SongId { get; internal set; }
     }
 }

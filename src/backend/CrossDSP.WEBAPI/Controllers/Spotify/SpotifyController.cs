@@ -1,6 +1,8 @@
+using System.Security.Claims;
 using CrossDSP.Infrastructure.Authentication.Spotify;
 using CrossDSP.Infrastructure.Helpers;
 using CrossDSP.Infrastructure.Services.Spotify;
+using CrossDSP.Infrastructure.Services.Spotify.Models;
 using CrossDSP.WEBAPI.DTOs.Responses;
 using CrossDSP.WEBAPI.Mappers;
 using Microsoft.AspNetCore.Authorization;
@@ -38,18 +40,41 @@ namespace CrossDSP.WEBAPI.Controllers.Spotify
         }
 
         [HttpGet]
-        [Route("user/playlists")]
+        [Route("user")]
         [Authorize(
             AuthenticationSchemes = SpotifyOAuthDefaults.AuthenticationScheme,
-            Policy = SpotifyOAuthDefaults.SpotifyUserPolicy)
-        ]
-        public async Task<IActionResult> GetUserPlaylists()
+            Policy = SpotifyOAuthDefaults.SpotifyUserPolicy
+        )]
+        public async Task<IActionResult> GetUser()
         {
             var spotifyUserId = HttpContext.User.GetClaimValueByName(
                 SpotifyOAuthDefaults.SpotifyUserEntityIdClaimKey
             );
 
-            var result = await _spotifyPlaylistService.GetUserPlaylists(spotifyUserId);
+            var spotifyUserName = HttpContext.User.GetClaimValueByName(
+                ClaimTypes.Name
+            );
+
+            return Ok(new BaseResponse<DSPUserResponse>(
+                new DSPUserResponse(
+                    dsp: SpotifyConstants.Spotify,
+                    id: spotifyUserId,
+                    username: spotifyUserName
+                )
+            ));
+        }
+
+        [HttpGet]
+        [Route("user/{userId}/playlists")]
+        [Authorize(
+            AuthenticationSchemes = SpotifyOAuthDefaults.AuthenticationScheme,
+            Policy = SpotifyOAuthDefaults.SpotifyUserPolicy)
+        ]
+        public async Task<IActionResult> GetUserPlaylists(
+            string userId
+        )
+        {
+            var result = await _spotifyPlaylistService.GetUserPlaylists(userId);
             if (result.HasData)
             {
                var responses = result.Data.ToPlaylistResponses();
@@ -57,6 +82,20 @@ namespace CrossDSP.WEBAPI.Controllers.Spotify
             }
 
             return Ok(new BaseResponse<PlaylistResponse>(Enumerable.Empty<PlaylistResponse>()));
+        }
+
+        [HttpGet]
+        [Route("user/{userId}/playlists/{playlistId}")]
+        [Authorize(
+            AuthenticationSchemes = SpotifyOAuthDefaults.AuthenticationScheme,
+            Policy = SpotifyOAuthDefaults.SpotifyUserPolicy)
+        ]
+        public async Task<IActionResult> AddTracksToPlaylist(
+            string userId,
+            string playlistId
+        )
+        {
+            return Ok();
         }
     }
 }

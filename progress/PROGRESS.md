@@ -14,3 +14,4 @@ Who needs a sprint board for their own personal project - nobody baby!!
 - Handle Spotify user authorization
 - Get user details (id, profile) from spotify apis
 - Get user playlist after retrieving id
+- Get user endpoint to get id.

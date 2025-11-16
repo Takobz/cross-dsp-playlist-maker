@@ -15,13 +15,13 @@ namespace CrossDSP.Infrastructure.Authentication.Spotify
         ILoggerFactory loggerFactory,
         UrlEncoder urlEncoder,
         ISystemClock systemClock,
-        ISpotifyUserService spotifyUserClient,
+        ISpotifyUserService spotifyUserService,
         IHttpContextAccessor httpContextAccessor)
         : AuthenticationHandler<SpotifyOAuthSchemeOptions>(options, loggerFactory, urlEncoder, systemClock)
     {
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
-            var userProfileResult = await spotifyUserClient.GetUser();
+            var userProfileResult = await spotifyUserService.GetUser();
             if (!userProfileResult.HasData)
             {
                 return AuthenticateResult.Fail("Failed to get spotify user for provided access token");
