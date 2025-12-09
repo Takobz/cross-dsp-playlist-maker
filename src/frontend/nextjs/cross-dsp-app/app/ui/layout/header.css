@@ -1,0 +1,18 @@
+.header-position {
+    position: fixed;
+    width: 100%;
+    z-index: 10;
+    top: 0;
+    background-color: black;
+}
+
+.header-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 25px;
+}
+
+.header-content .item {
+    max-width: 35px;
+}
