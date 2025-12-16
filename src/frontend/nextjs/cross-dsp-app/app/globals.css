@@ -28,3 +28,7 @@ body {
 .clickable {
   cursor: pointer;
 }
+
+h1, h2, h3, p {
+  color: #FFF;
+}

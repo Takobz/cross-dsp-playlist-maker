@@ -1,16 +1,27 @@
 'use client'
-import { SelectDSPImageData } from "@/app/lib/definitions";
+
+import { SelectDSPImageProps } from "@/app/lib/definitions";
 import Image from "next/image";
 import './selectDSP.css'
-import { ChevronDoubleRightIcon } from "@heroicons/react/24/outline";
+import { useRouter } from "next/navigation";
 
 const SelectDSP = ({
     fromImage,
     toImage
-}: SelectDSPImageData
+}: SelectDSPImageProps
 ) => {
+    const router = useRouter(); 
+    const onSelectDSPTile = () => {
+        router.push(
+            `authorize-init?from=${fromImage.dspName}&to=${toImage.dspName}`
+        );
+    }
+
     return (
-        <div className="select-dsp-container">
+        <div 
+            onClick={onSelectDSPTile} 
+            className="select-dsp-container"
+        >
             <div className="dsp-image-details">
                 <Image
                     src={fromImage.src}
@@ -18,13 +29,13 @@ const SelectDSP = ({
                     width={fromImage.width}
                     height={fromImage.height}
                 />
-                <p>YouTube Music</p>
+                <p>{fromImage.dspDisplayName}</p>
             </div>
 
             <p>To</p>
 
             <div className="dsp-image-details">
-                <p>Spotify</p>
+                <p>{toImage.dspDisplayName}</p>
                 <Image
                     src={toImage.src}
                     alt={toImage.alt}

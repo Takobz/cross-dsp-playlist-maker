@@ -3,6 +3,8 @@ using System.Text.Json.Serialization;
 using CrossDSP.Infrastructure.Authentication.Google;
 using CrossDSP.Infrastructure.Authentication.Spotify;
 using CrossDSP.Infrastructure.ServiceDependencyInjection;
+using CrossDSP.WEBAPI.Constants;
+using CrossDSP.WEBAPI.Options;
 using CrossDSP.WEBAPI.ServiceDependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -43,16 +45,40 @@ builder.Services.AddAuthorizationBuilder()
     }
 );
 
+builder.Services.AddCors(options =>
+{
+    var corsOptions = new CorsOptions();
+    builder.Configuration.Bind(corsOptions); 
+
+    options.AddPolicy(
+    name: WebAppConstants.AllowCrossDSPFrontEndPolicy,
+    policy =>
+    {
+        policy.WithOrigins(
+            corsOptions.AllowedOrigins
+        )
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+    }); 
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    //Development only middleware
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+else
+{
+    //Production only middleware
+    app.UseHttpsRedirection();
+}
 
-app.UseHttpsRedirection();
+
+app.UseCors(WebAppConstants.AllowCrossDSPFrontEndPolicy);
 
 app.UseAuthentication();
 app.UseAuthorization();

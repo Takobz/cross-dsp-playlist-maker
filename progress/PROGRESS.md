@@ -4,7 +4,7 @@ Who needs a sprint board for their own personal project - nobody baby!!
 
 ## What I am doing Now
 
-- Create the UI - will have details as I move.
+- Fix double windows opening bug
 
 ## What I have done
 
@@ -17,3 +17,4 @@ Who needs a sprint board for their own personal project - nobody baby!!
 - Get user endpoint to get id.
 - Add Tracks to a user's spotify playlist
 - Learn basics of NextJS for UI. Used [NextJS guide](https://nextjs.org/learn/dashboard-app)
+- Add Card To Initiate Google to Spotify
