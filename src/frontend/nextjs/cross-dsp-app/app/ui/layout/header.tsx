@@ -5,9 +5,9 @@ const Header = () => {
     return (
         <header className='header-position'>
             <div className="header-content">
-                <Bars3Icon className='clickable item' />
+                {/* <Bars3Icon className='clickable item' /> */}
                 <h2 className='clickable'>Cross DSP</h2>
-                <h2 className='clickable item'>Login</h2>
+                {/* <h2 className='clickable item'>Login</h2> */}
             </div>
         </header>
     );    
