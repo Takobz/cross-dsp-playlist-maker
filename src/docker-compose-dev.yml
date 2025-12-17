@@ -8,3 +8,13 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - DOTNET_RUNNING_IN_CONTAINER=true
+  nextjs-frontend:
+    build:
+      context: ./frontend/nextjs/cross-dsp-app
+      dockerfile: Dockerfile.dev 
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - backend
