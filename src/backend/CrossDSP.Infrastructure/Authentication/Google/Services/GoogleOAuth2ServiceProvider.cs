@@ -52,7 +52,8 @@ namespace CrossDSP.Infrastructure.Authentication.Google.Services
             var authorizeUrl = await Task.FromResult($"{optionValues.TokenEndpoint}{requestQuery.GenerateQueryParameters()}");
 
             return new AuthorizationCodeFlowRedirect(
-                authorizeUrl
+                authorizeUrl,
+                Guid.NewGuid().ToString()
             );
         }
 

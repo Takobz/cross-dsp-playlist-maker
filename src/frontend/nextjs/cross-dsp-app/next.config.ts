@@ -8,7 +8,8 @@ const nextConfig: NextConfig = {
         destination: 'http://localhost:5080/:path*'
       }
     ]
-  }
+  },
+  reactStrictMode: false
 };
 
 export default nextConfig;

@@ -10,6 +10,8 @@ using CrossDSP.WEBAPI.ServiceDependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddMemoryCache();
+
 builder.Services.AddInfrastructureDependencies();
 builder.Services.AddGoogleServices(builder.Configuration);
 builder.Services.AddSpotifyServices(builder.Configuration);

@@ -7,6 +7,7 @@ export async function getGoogleRedirect(): Promise<AuthorizationCodeFlowURLRespo
                 return response.json()
             }
             else {
+                console.log(response);
                 throw Error("Failed To Get Google Token")
             }
         })

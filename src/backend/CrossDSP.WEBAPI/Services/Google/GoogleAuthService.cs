@@ -1,5 +1,7 @@
 using CrossDSP.Infrastructure.Authentication.Google.Services;
 using CrossDSP.WEBAPI.DTOs.Responses;
+using CrossDSP.WEBAPI.Extensions;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace CrossDSP.WEBAPI.Services.Google
 {
@@ -16,10 +18,12 @@ namespace CrossDSP.WEBAPI.Services.Google
     {
         private readonly ILogger<GoogleAuthService> _logger;
         private readonly IGoogleOAuthServiceProvider _googleOAuthServiceProvider;
+        private readonly IMemoryCache _memoryCache;
 
         public GoogleAuthService(
             ILogger<GoogleAuthService> logger,
-            IGoogleOAuthServiceProvider googleOAuthServiceProvider
+            IGoogleOAuthServiceProvider googleOAuthServiceProvider,
+            IMemoryCache memoryCache
         )
         {
             _googleOAuthServiceProvider = googleOAuthServiceProvider;
@@ -29,6 +33,12 @@ namespace CrossDSP.WEBAPI.Services.Google
         public async Task<string> GetGoogleAuthorizeUrl()
         {
             var result = await _googleOAuthServiceProvider.InitiateAuthorizationCodeFlow();
+            // await _memoryCache.GetOrSetItemAsync(
+            //     key: result.AuthorizationState,
+            //     func: () => Task.FromResult(),
+            //     expiryTimeInSeconds: 120
+            // );
+
             return result.AuthorizeRedirectUrl;
         }
 

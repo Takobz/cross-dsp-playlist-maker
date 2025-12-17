@@ -1,13 +1,22 @@
+version: "3.8"
+
+networks:
+  cross-dsp:
+    driver: bridge
+
 services:
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile.dev 
     ports:
-      - "5080:8080"
+      - "5080:5080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - DOTNET_RUNNING_IN_CONTAINER=true
+      - ASPNETCORE_HTTP_PORTS=5080
+    networks:
+      - cross-dsp
   nextjs-frontend:
     build:
       context: ./frontend/nextjs/cross-dsp-app
@@ -16,5 +25,9 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=development
+    volumes:
+      - ./frontend/nextjs/cross-dsp-app:/app
     depends_on:
       - backend
+    networks:
+      - cross-dsp
