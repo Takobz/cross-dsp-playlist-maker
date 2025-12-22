@@ -10,7 +10,7 @@ namespace CrossDSP.WEBAPI.Services.Google
     */
     public interface IGoogleAuthService
     {
-        public Task<string> GetGoogleAuthorizeUrl();
+        public Task<AuthorizeInitResponse> GetGoogleAuthorizeUrl();
         public Task<DSPAccessTokenResponse> GetAccessToken(string code);
     }
 
@@ -20,6 +20,8 @@ namespace CrossDSP.WEBAPI.Services.Google
         private readonly IGoogleOAuthServiceProvider _googleOAuthServiceProvider;
         private readonly IMemoryCache _memoryCache;
 
+        private readonly int _minutesInSeconds = 300;
+
         public GoogleAuthService(
             ILogger<GoogleAuthService> logger,
             IGoogleOAuthServiceProvider googleOAuthServiceProvider,
@@ -28,23 +30,30 @@ namespace CrossDSP.WEBAPI.Services.Google
         {
             _googleOAuthServiceProvider = googleOAuthServiceProvider;
             _logger = logger;
+            _memoryCache = memoryCache;
         }
 
-        public async Task<string> GetGoogleAuthorizeUrl()
+        public async Task<AuthorizeInitResponse> GetGoogleAuthorizeUrl()
         {
             var result = await _googleOAuthServiceProvider.InitiateAuthorizationCodeFlow();
-            // await _memoryCache.GetOrSetItemAsync(
-            //     key: result.AuthorizationState,
-            //     func: () => Task.FromResult(),
-            //     expiryTimeInSeconds: 120
-            // );
+            var authorizeInitResponse = new AuthorizeInitResponse(
+                redirectUri: result.AuthorizeRedirectUrl,
+                authorizationState: result.AuthorizationState
+            );
 
-            return result.AuthorizeRedirectUrl;
+            await _memoryCache.GetOrSetItemAsync(
+                key: result.AuthorizationState,
+                func: async () => await Task.FromResult(authorizeInitResponse),
+                expiryTimeInSeconds: _minutesInSeconds
+            );
+
+            return authorizeInitResponse;
         }
 
         public async Task<DSPAccessTokenResponse> GetAccessToken(string code)
         {
             var result = await _googleOAuthServiceProvider.GetGoogleAccessToken(code);
+
             return new DSPAccessTokenResponse(
                 accessToken: result.AccessToken,
                 expiresIn: result.ExpiresIn,

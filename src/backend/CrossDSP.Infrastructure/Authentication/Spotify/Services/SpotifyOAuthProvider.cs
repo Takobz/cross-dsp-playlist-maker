@@ -10,7 +10,7 @@ namespace CrossDSP.Infrastructure.Authentication.Spotify.Services
 {
     public interface ISpotifyOAuthProvider
     {
-        public Task<string> InitiateAuthorizationRequest(string scopes);
+        public Task<AuthorizationCodeFlowRedirect> InitiateAuthorizationRequest(string scopes);
         public Task<DSPAccessToken> GetUserAccessToken(string code);
     }
 
@@ -28,7 +28,7 @@ namespace CrossDSP.Infrastructure.Authentication.Spotify.Services
             _httpClient = httpClient;
         }
 
-        public async Task<string> InitiateAuthorizationRequest(string scopes)
+        public async Task<AuthorizationCodeFlowRedirect> InitiateAuthorizationRequest(string scopes)
         {
             var requestQuery = new Dictionary<string, string>
             {
@@ -53,7 +53,10 @@ namespace CrossDSP.Infrastructure.Authentication.Spotify.Services
                 response.StatusCode == HttpStatusCode.Redirect)
             {
                 var spotifyAuthorizeUrl = response?.Headers?.Location?.AbsoluteUri ?? string.Empty;
-                return spotifyAuthorizeUrl;
+                return new AuthorizationCodeFlowRedirect(
+                    spotifyAuthorizeUrl,
+                    Guid.NewGuid().ToString()
+                );
             }
 
             throw new Exception("Failed To Initiate authorize request");

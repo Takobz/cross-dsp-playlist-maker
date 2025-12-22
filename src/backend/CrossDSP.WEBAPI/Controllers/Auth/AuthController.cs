@@ -32,9 +32,12 @@ namespace CrossDSP.WEBAPI.Controllers.Auth
         [ProducesResponseType(typeof(BaseResponse<InitiateAutorizeResponse>), StatusCodes.Status200OK)]
         public async Task<ActionResult<BaseResponse<InitiateAutorizeResponse>>> InitiateGoogleAuthorize()
         {
-            var redirectUrl = await _googleAuthService.GetGoogleAuthorizeUrl();
+            var result = await _googleAuthService.GetGoogleAuthorizeUrl();
             return Ok(new BaseResponse<InitiateAutorizeResponse>(
-                new InitiateAutorizeResponse(redirectUrl)
+                new InitiateAutorizeResponse(
+                    result.RedirectUri,
+                    result.AuthorizationState
+                )
             ));
         }
 
@@ -68,12 +71,15 @@ namespace CrossDSP.WEBAPI.Controllers.Auth
         public async Task<ActionResult<BaseResponse<InitiateAutorizeResponse>>> InitiateSpotifyAuthorize()
         {
             var scopes = SpotifyOAuthDefaults.UserPublicPlaylistSpotifyScopes();
-            var redirectUrl = await _spotifyAuthProvider.InitiateAuthorizationRequest(
+            var result = await _spotifyAuthProvider.InitiateAuthorizationRequest(
                 scopes
             );
 
             return Ok(new BaseResponse<InitiateAutorizeResponse>(
-                new InitiateAutorizeResponse(redirectUrl)
+                new InitiateAutorizeResponse(
+                    result.AuthorizeRedirectUrl,
+                    result.AuthorizationState
+                )
             ));
         }
 

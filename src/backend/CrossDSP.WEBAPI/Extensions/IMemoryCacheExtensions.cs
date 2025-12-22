@@ -24,5 +24,18 @@ namespace CrossDSP.WEBAPI.Extensions
 
             return result;
         }
+
+        public static TItem? TryGetItemAsync<TItem>(
+            this IMemoryCache memoryCache,
+            string key
+        )
+        {
+            if (memoryCache.TryGetValue(key, out object? item))
+            {
+                return (TItem?)item;
+            }
+
+            return default;
+        }
     }
 }
