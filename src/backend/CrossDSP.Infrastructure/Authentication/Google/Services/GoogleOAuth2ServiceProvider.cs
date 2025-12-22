@@ -37,6 +37,7 @@ namespace CrossDSP.Infrastructure.Authentication.Google.Services
 
         public async Task<AuthorizationCodeFlowRedirect> InitiateAuthorizationCodeFlow()
         {
+            var state = $"{Guid.NewGuid()}";
             var optionValues = _oauth2Options.CurrentValue;
             var requestQuery = new Dictionary<string, string>
             {
@@ -45,7 +46,7 @@ namespace CrossDSP.Infrastructure.Authentication.Google.Services
                 { "response_type", $"{GoogleOAuth2Defaults.CodeResponseType}" },
                 { "scope", $"{GoogleOAuth2Defaults.YouTubeForceSSLScope}" }, //space saparated for multiple scopes
                 { "access_type", $"{GoogleOAuth2Defaults.OfflineAccessType}" },
-                { "state", $"{Guid.NewGuid()}" },
+                { "state",  state },
                 { "prompt", $"{GoogleOAuth2Defaults.SelectAccountPrompt}"}
             };
 
@@ -53,7 +54,7 @@ namespace CrossDSP.Infrastructure.Authentication.Google.Services
 
             return new AuthorizationCodeFlowRedirect(
                 authorizeUrl,
-                Guid.NewGuid().ToString()
+                state
             );
         }
 

@@ -53,14 +53,29 @@ namespace CrossDSP.WEBAPI.Controllers.Auth
         {
             //TODO validate state - get from Cache??
 
-            if (string.IsNullOrEmpty(code))
+            if (string.IsNullOrEmpty(code) || string.IsNullOrEmpty(state))
             {
                 return BadRequest(); //TODO: refine this....
             }
 
-            var accessToken = await _googleAuthService.GetAccessToken(code);
+            await _googleAuthService.GetAccessToken(code, state);
+            return Ok("<h1> Close This Window <h1/>"); //return a view :)
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("google-token")]
+        [ProducesResponseType(typeof(BaseResponse<DSPAccessTokenResponse?>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<BaseResponse<DSPAccessTokenResponse?>>> GetGoogleAccessToken(
+            [FromQuery(Name = "authorization_state")] string authorizationState
+        )
+        {
+            var result = await _googleAuthService.TryGetAccessTokenFromCache(
+                authorizationState
+            );
+
             return Ok(new BaseResponse<DSPAccessTokenResponse>(
-                accessToken
+                dtoData: result!
             ));
         }
 

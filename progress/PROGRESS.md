@@ -4,6 +4,12 @@ Who needs a sprint board for their own personal project - nobody baby!!
 
 ## What I am doing Now
 
+- Return authorize url with a key to check if authorization is done.
+- Add endpoint to poll for access token
+  - Check possible cache bug
+- Update UI to also get the key.
+- Poll the backend with they key.
+
 - Fix double windows opening bug
 
 ## What I have done
