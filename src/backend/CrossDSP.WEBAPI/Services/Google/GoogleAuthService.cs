@@ -1,7 +1,7 @@
 using CrossDSP.Infrastructure.Authentication.Common.Models;
 using CrossDSP.Infrastructure.Authentication.Google.Services;
+using CrossDSP.Infrastructure.Extensions;
 using CrossDSP.WEBAPI.DTOs.Responses;
-using CrossDSP.WEBAPI.Extensions;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace CrossDSP.WEBAPI.Services.Google

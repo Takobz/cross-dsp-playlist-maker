@@ -16,3 +16,4 @@ export async function getGoogleRedirect(): Promise<AuthorizationCodeFlowURLRespo
         }
     );
 }
+

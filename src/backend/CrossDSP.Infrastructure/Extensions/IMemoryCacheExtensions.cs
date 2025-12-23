@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Caching.Memory;
 
-namespace CrossDSP.WEBAPI.Extensions
+namespace CrossDSP.Infrastructure.Extensions
 {
     public static class IMemoryCacheExtensions
     {
@@ -11,7 +11,7 @@ namespace CrossDSP.WEBAPI.Extensions
             int expiryTimeInSeconds
         )
         {
-            if (memoryCache.TryGetValue(key, out object? item))
+            if (memoryCache.TryGetValue(key, out object? item) && item != null)
             {
                 return (TItem?) item;
             }
