@@ -1,4 +1,7 @@
-import { AuthorizationCodeFlowURLResponse } from "./cross-dsp-api-models";
+import { 
+    AuthorizationCodeFlowURLResponse, 
+    DSPAccessTokenResponse 
+} from "./cross-dsp-api-models";
 
 export async function getGoogleRedirect(): Promise<AuthorizationCodeFlowURLResponse> {
     return await fetch(`dsp-api/auth/google-init`)
@@ -17,3 +20,19 @@ export async function getGoogleRedirect(): Promise<AuthorizationCodeFlowURLRespo
     );
 }
 
+export async function getGoogleAccessToken(authorizationState: string): Promise<DSPAccessTokenResponse> {
+    return await fetch(`dsp-api/auth/google-token?authorization_state=${authorizationState}`)
+        .then(response => {
+            if (response.ok){
+                return response.json();
+            }
+            else {
+                console.log(response);
+                throw new Error("Failed to get Google Token");
+            }
+        })
+        .then(apiResponse => {
+            return apiResponse as DSPAccessTokenResponse;
+        }
+    );
+}

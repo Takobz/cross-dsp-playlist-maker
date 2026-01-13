@@ -4,12 +4,13 @@ Who needs a sprint board for their own personal project - nobody baby!!
 
 ## What I am doing Now
 
-- Return authorize url with a key to check if authorization is done.
-- Add endpoint to poll for access token
-  - Check possible cache bug
-- Update UI to also get the key.
-- Poll the backend with they key.
+- DSPAccessTokenContext to keep track of access tokens
+- Spinner on waiting for access token
+- Deploy this to the Raspberry Pi
 
+### Nicities
+
+- Use HttpOnly cookie for storing access tokens in client code.
 - Fix double windows opening bug
 
 ## What I have done
@@ -24,3 +25,8 @@ Who needs a sprint board for their own personal project - nobody baby!!
 - Add Tracks to a user's spotify playlist
 - Learn basics of NextJS for UI. Used [NextJS guide](https://nextjs.org/learn/dashboard-app)
 - Add Card To Initiate Google to Spotify
+- Return authorize url with a key to check if authorization is done.
+- Add endpoint to poll for access token
+  - Check possible cache bug
+- Update UI to also get the key.
+- Poll the backend with they key.

@@ -5,3 +5,12 @@ export type AuthorizationCodeFlowURLResponse = {
     },
     error_messages: string[];
 }
+
+export type DSPAccessTokenResponse = {
+    data: {
+        access_token: string;
+        refresh_token: string;
+        expires_in: number;
+    },
+    error_messages: string[];
+}

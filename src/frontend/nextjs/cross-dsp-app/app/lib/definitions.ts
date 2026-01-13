@@ -15,7 +15,8 @@ export type SelectDSPImageProps = {
 }
 
 export interface LoadRedirectProps {
-    getRedirectFunction: () => Promise<AuthorizationCodeFlowURLResponse> 
+    getRedirectFunction: () => Promise<AuthorizationCodeFlowURLResponse> ,
+    dspName: DSPNames
 }
 
 export enum DSPNames {
