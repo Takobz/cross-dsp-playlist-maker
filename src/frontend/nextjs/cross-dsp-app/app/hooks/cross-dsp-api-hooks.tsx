@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { DSPAccessTokenResponse } from "../lib/cross-dsp-api-models";
 import { getGoogleAccessToken, getGoogleRedirect } from "../lib/cross-dsp-api-service"
 import { DSPNames } from "../lib/definitions"
@@ -14,7 +14,7 @@ const useCrossDSPAuthorization = (dspName: DSPNames) => {
 }
 
 let INTERVAL_ID: NodeJS.Timeout;
-const useDSPAccessTokenPoller = async (
+const useDSPAccessTokenPoller = (
     dspName: DSPNames, 
     authorizationState: string,
     onPollingComplete: () => void
@@ -24,24 +24,19 @@ const useDSPAccessTokenPoller = async (
         throw Error(
             `${typeof(DSPAccessTokensContext)} should be used in components wrapped by the context provider`
         );
-
     }
 
-    const delayInMilliSeconds = 10000;
-    INTERVAL_ID = setInterval(
-        accessTokenPoller,
-        delayInMilliSeconds,  
-        dspName, 
-        authorizationState,
-        dspAccessTokensContext,
-        onPollingComplete
-    );
-    
-    return INTERVAL_ID;
-}
-
-const useDSPAccessTokenPollerStopper = () => {
-    
+    useEffect(() => {
+        const delayInMilliSeconds = 10000;
+        INTERVAL_ID = setInterval(
+            accessTokenPoller,
+            delayInMilliSeconds,  
+            dspName, 
+            authorizationState,
+            dspAccessTokensContext,
+            onPollingComplete
+        );
+    }, [dspName, authorizationState]);
 }
 
 const accessTokenPoller = async (
@@ -75,7 +70,6 @@ async function setDSPAccessToken(
     const token = await getGoogleAccessToken(authorizationState);
 
     if (token.data) {
-        console.log("SETTING TOKEN: " + INTERVAL_ID);
         clearInterval(INTERVAL_ID);
 
         switch(dspName){
