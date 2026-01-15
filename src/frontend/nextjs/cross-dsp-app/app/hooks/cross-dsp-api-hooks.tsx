@@ -1,6 +1,8 @@
+import { useContext } from "react";
 import { DSPAccessTokenResponse } from "../lib/cross-dsp-api-models";
 import { getGoogleAccessToken, getGoogleRedirect } from "../lib/cross-dsp-api-service"
 import { DSPNames } from "../lib/definitions"
+import { DSPAccessTokensContext } from "@/app/context/DSPAccessTokenContextProvider"
 
 const useCrossDSPAuthorization = (dspName: DSPNames) => {
     switch (dspName) {
@@ -14,42 +16,92 @@ const useCrossDSPAuthorization = (dspName: DSPNames) => {
 let INTERVAL_ID: NodeJS.Timeout;
 const useDSPAccessTokenPoller = async (
     dspName: DSPNames, 
-    authorizationState: string
+    authorizationState: string,
+    onPollingComplete: () => void
 ) => {
-    const delayInMilliSeconds = 10000;
+    const dspAccessTokensContext = useContext(DSPAccessTokensContext);
+    if (dspAccessTokensContext === undefined){
+        throw Error(
+            `${typeof(DSPAccessTokensContext)} should be used in components wrapped by the context provider`
+        );
 
+    }
+
+    const delayInMilliSeconds = 10000;
     INTERVAL_ID = setInterval(
         accessTokenPoller,
         delayInMilliSeconds,  
         dspName, 
-        authorizationState
+        authorizationState,
+        dspAccessTokensContext,
+        onPollingComplete
     );
+    
+    return INTERVAL_ID;
+}
+
+const useDSPAccessTokenPollerStopper = () => {
     
 }
 
 const accessTokenPoller = async (
     dspName: DSPNames, 
-    authorizationState: string
-) => {
-        let tokenResponse = {} as DSPAccessTokenResponse;
-        
-        switch (dspName) {
+    authorizationState: string,
+    dspAccessTokenContext: DSPAccessTokensContext,
+    onPollComplete: () => void
+) => {      
+    switch (dspName) {
+        case DSPNames.ytmusic:
+            await setDSPAccessToken(
+                dspName, 
+                authorizationState,
+                dspAccessTokenContext!,
+                onPollComplete
+            );
+            break;
+
+        default:
+            throw new Error(`Provided DSP: ${dspName} not supported.`);
+    }
+};
+
+async function setDSPAccessToken(
+    dspName: DSPNames, 
+    authorizationState: string,
+    dspAccessTokensContext: DSPAccessTokensContext,
+    onPollComplete: () => void
+) {
+    const currentTokens = dspAccessTokensContext.dspTokens;
+    const token = await getGoogleAccessToken(authorizationState);
+
+    if (token.data) {
+        console.log("SETTING TOKEN: " + INTERVAL_ID);
+        clearInterval(INTERVAL_ID);
+
+        switch(dspName){
             case DSPNames.ytmusic:
-                tokenResponse = await getGoogleAccessToken(authorizationState);
+                dspAccessTokensContext.setDSPTokens(
+                {
+                    ...currentTokens, 
+                    Google: {
+                        AccessToken: token.data.access_token,
+                        RefreshToken: token.data.refresh_token,
+                        ExpiresIn: token.data.expires_in
+                    }
+                });
+                onPollComplete();
                 break;
+
             default:
                 throw new Error(`Provided DSP: ${dspName} not supported.`);
         }
-        
-        if (tokenResponse.data && tokenResponse.data){
-            clearInterval(INTERVAL_ID);
-        }
+    }
 
-        if (tokenResponse.error_messages.length > 0) {
-            //will need to prop this to the user some how.
-            console.log(tokenResponse.error_messages)
-        }
-    };
+    if (token.error_messages.length > 0) {
+        //will need to prop this to the user some how.
+        console.log(token.error_messages)
+    }
+}
 
 export { 
     useCrossDSPAuthorization,
