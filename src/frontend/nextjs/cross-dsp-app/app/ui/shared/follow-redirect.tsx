@@ -1,8 +1,8 @@
 'use client'
 
-import { DSPAccessTokensContext } from "@/app/context/DSPAccessTokenContextProvider";
 import { useDSPAccessTokenPoller } from "@/app/hooks/cross-dsp-api-hooks";
 import { DSPNames } from "@/app/lib/definitions";
+import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
 interface FollowRedirectProps {
@@ -17,7 +17,7 @@ const FollowRedirect = ({
     authorizationState
 }: FollowRedirectProps) => {
     const [isPollingDone, setIsPollingDone] = useState(false);
-    const dspAccessTokensContext = useContext(DSPAccessTokensContext);
+    const navigate = useRouter();
 
     useEffect(() => {
         window.open(redirectURL, '_blank');
@@ -26,14 +26,17 @@ const FollowRedirect = ({
     useDSPAccessTokenPoller(
         dspName,
         authorizationState,
-        () => setIsPollingDone(true)
+        () => {
+            setIsPollingDone(true)
+            navigate.push("song-search");
+        }
     );
 
     //find a way to know we are done polling...
 
     return (
         <>
-            {isPollingDone ? <>{JSON.stringify(dspAccessTokensContext?.dspTokens)}</> :
+            {isPollingDone ? <>Taking you to the search</> :
              <>Waiting for Access Token</>
             }
         </>

@@ -14,3 +14,22 @@ export type DSPAccessTokenResponse = {
     },
     error_messages: string[];
 }
+
+export type DSPSongDataResponse = {
+    main_artist_name: string,
+    song_title: string,
+    song_id: {
+        dsp: SongDSP,
+        id: string
+    }
+}
+
+export type DSPSongsResponse = {
+    data_items: DSPSongDataResponse[],
+    error_messages: []
+}
+
+export enum SongDSP {
+    ytmusic = "YouTube Music",
+    spotify = "Spotify"
+}

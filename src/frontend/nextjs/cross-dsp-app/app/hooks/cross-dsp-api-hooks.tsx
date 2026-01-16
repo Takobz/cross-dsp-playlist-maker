@@ -1,6 +1,6 @@
-import { useContext, useEffect } from "react";
-import { DSPAccessTokenResponse } from "../lib/cross-dsp-api-models";
-import { getGoogleAccessToken, getGoogleRedirect } from "../lib/cross-dsp-api-service"
+import { useContext, useEffect, useState } from "react";
+import { DSPSongsResponse } from "../lib/cross-dsp-api-models";
+import { getGoogleAccessToken, getGoogleRedirect, getGoogleSongsByQuery } from "../lib/cross-dsp-api-service"
 import { DSPNames } from "../lib/definitions"
 import { DSPAccessTokensContext } from "@/app/context/DSPAccessTokenContextProvider"
 
@@ -11,6 +11,41 @@ const useCrossDSPAuthorization = (dspName: DSPNames) => {
         default:
             throw new Error(`Provided DSP: ${dspName} has no authorization handler`);
     }
+}
+
+const useCrossDSPSongsFetcher = (
+    query: string,
+    dspName: DSPNames
+) => {
+    const [songs, setSongs] = useState<DSPSongsResponse>()
+
+    const dspAccessTokensContext = useContext(DSPAccessTokensContext);
+    if (dspAccessTokensContext === undefined){
+        throw Error(
+            `${typeof(DSPAccessTokensContext)} should be used in components wrapped by the context provider`
+        );
+    }
+    
+    useEffect(() => {
+        async function getSongs() {
+
+            console.log(dspName)
+            switch (dspName) {
+                case DSPNames.ytmusic:
+                    const songs = await getGoogleSongsByQuery(
+                        query,
+                        dspAccessTokensContext?.dspTokens.Google.AccessToken!
+                    )
+                    setSongs(songs)
+                default:
+                    throw new Error(`Provided DSP: ${dspName} has no resources handler`)
+            }
+        }
+
+        getSongs();
+    }, [query, dspName]);
+
+    return songs;
 }
 
 let INTERVAL_ID: NodeJS.Timeout;
@@ -99,5 +134,6 @@ async function setDSPAccessToken(
 
 export { 
     useCrossDSPAuthorization,
-    useDSPAccessTokenPoller
+    useDSPAccessTokenPoller,
+    useCrossDSPSongsFetcher
 }

@@ -1,6 +1,5 @@
 'use client'
 
-import { DSPAccessTokenContextProvider } from './context/DSPAccessTokenContextProvider';
 import { supportedDSPFromToList } from './lib/default-data'
 import SelectDSP from './ui/cards/selectDSP';
 

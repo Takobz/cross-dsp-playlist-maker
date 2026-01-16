@@ -1,6 +1,7 @@
 import { 
     AuthorizationCodeFlowURLResponse, 
-    DSPAccessTokenResponse 
+    DSPAccessTokenResponse, 
+    DSPSongsResponse
 } from "./cross-dsp-api-models";
 
 export async function getGoogleRedirect(): Promise<AuthorizationCodeFlowURLResponse> {
@@ -35,4 +36,27 @@ export async function getGoogleAccessToken(authorizationState: string): Promise<
             return apiResponse as DSPAccessTokenResponse;
         }
     );
+}
+
+export async function getGoogleSongsByQuery(
+    query: string,
+    beaerToken: string
+): Promise<DSPSongsResponse>{
+
+    return await fetch(`dsp-api/google/search?query=${query}`, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${beaerToken}`
+        }
+    })
+    .then(response => {
+        if (response.ok){
+            return response.json()
+        }
+        else {
+            console.log(response);
+            throw new Error("Failed to data from api");
+        }
+    })
+    .then(apiResponse => apiResponse as DSPSongsResponse)
 }
