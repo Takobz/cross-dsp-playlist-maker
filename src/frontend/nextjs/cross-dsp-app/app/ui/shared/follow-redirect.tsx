@@ -3,7 +3,7 @@
 import { useDSPAccessTokenPoller } from "@/app/hooks/cross-dsp-api-hooks";
 import { DSPNames } from "@/app/lib/definitions";
 import { useRouter } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface FollowRedirectProps {
     redirectURL: string,

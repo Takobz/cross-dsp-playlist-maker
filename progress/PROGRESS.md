@@ -4,7 +4,7 @@ Who needs a sprint board for their own personal project - nobody baby!!
 
 ## What I am doing Now
 
-- DSPAccessTokenContext to keep track of access tokens
+- Make token utils use local storage for persisting the token for x amount of time.
 - Spinner on waiting for access token
 - Deploy this to the Raspberry Pi
 
@@ -30,3 +30,5 @@ Who needs a sprint board for their own personal project - nobody baby!!
   - Check possible cache bug
 - Update UI to also get the key.
 - Poll the backend with they key.
+- DSPAccessTokenContext to keep track of access tokens
+
