@@ -12,9 +12,12 @@ const IconButton = ({
 ) => {
     
     return (
-        <button onClick={onClick}>
-            {text}
-        </button>
+        <div className="flex items-center justify-center w-1/2 rounded-full">
+            <button className="bg-sky-500/100 w-full" onClick={onClick}>
+                {text}
+            </button>
+        </div>
+        
     );
 }
 

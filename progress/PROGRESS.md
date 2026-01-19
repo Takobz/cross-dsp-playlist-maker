@@ -4,9 +4,11 @@ Who needs a sprint board for their own personal project - nobody baby!!
 
 ## What I am doing Now
 
-- Make token utils use local storage for persisting the token for x amount of time.
+- **Styling fixes LATER - get mvp up**
+- Add track via Add Btn to Spotify
 - Spinner on waiting for access token
 - Deploy this to the Raspberry Pi
+- Figure out tailwindcss mess with styling.
 
 ### Nicities
 
@@ -31,4 +33,4 @@ Who needs a sprint board for their own personal project - nobody baby!!
 - Update UI to also get the key.
 - Poll the backend with they key.
 - DSPAccessTokenContext to keep track of access tokens
-
+- Make token utils use local storage for persisting the token for x amount of time.
