@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "./ui/layout/header";
 import { DSPAccessTokenContextProvider } from "./context/DSPAccessTokenContextProvider";
+import { DSPFromToSongsContextProvider } from "./context/DSPFromToSongsContextProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,14 +27,16 @@ export default function RootLayout({
 }>) {
   return (
     <DSPAccessTokenContextProvider>
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          <Header />
-          {children}
-        </body>
-      </html>
+      <DSPFromToSongsContextProvider>
+        <html lang="en">
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          >
+            <Header />
+            {children}
+          </body>
+        </html>
+      </DSPFromToSongsContextProvider>
     </DSPAccessTokenContextProvider>
   );
 }

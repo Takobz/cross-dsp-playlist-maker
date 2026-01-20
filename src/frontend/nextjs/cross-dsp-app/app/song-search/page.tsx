@@ -5,12 +5,31 @@ import { useCrossDSPSongsFetcher } from "../hooks/cross-dsp-api-hooks"
 import { DSPNames } from "../lib/definitions";
 import DSPSong from "../ui/cards/DSPsong";
 import IconButton from "../ui/buttons/icon-button";
+import { useRouter } from "next/navigation";
+import { useContext, useEffect } from "react";
+import { DSPSongsResponse } from "../lib/cross-dsp-api-models";
+import { DSPFromToSongsContext } from "../context/DSPFromToSongsContextProvider";
 
 const SongPage = () => {
+    const router = useRouter();
+    const dspFromToSongsContext = useContext(DSPFromToSongsContext);
+
     const songs = useCrossDSPSongsFetcher(
         "jaded",
         DSPNames.ytmusic
     );
+
+    const onAddSongs = (songs: DSPSongsResponse | undefined) => {
+        if (songs && songs.data_items) {
+            dspFromToSongsContext?.setDSPFromToSongs({
+                from: DSPNames.ytmusic,
+                to: DSPNames.spotify,
+                songs: songs.data_items
+            });
+
+            router.push("review-songs");
+        }
+    }
 
     return (
 
@@ -32,7 +51,7 @@ const SongPage = () => {
                     <IconButton 
                         icon=""
                         text="Add"
-                        onClick={() => alert('Clicked Btn')}
+                        onClick={() => onAddSongs(songs)}
                     />
                 </div>
             
