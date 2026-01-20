@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { DSPSongsResponse } from "../lib/cross-dsp-api-models";
-import { getGoogleAccessToken, getGoogleRedirect, getGoogleSongsByQuery } from "../lib/cross-dsp-api-service"
+import { getGoogleAccessToken, getGoogleRedirect, getGoogleSongsByQuery, getSpotifySongsByArtistAndName } from "../lib/cross-dsp-api-service"
 import { DSPNames } from "../lib/definitions"
 import { DSPAccessTokensContext } from "@/app/context/DSPAccessTokenContextProvider"
 
@@ -13,8 +13,13 @@ const useCrossDSPAuthorization = (dspName: DSPNames) => {
     }
 }
 
+
+
 const useCrossDSPSongsFetcher = (
-    query: string,
+    query: {
+        songName: string,
+        artistName?: string
+    },
     dspName: DSPNames
 ) => {
     const [songs, setSongs] = useState<DSPSongsResponse>()
@@ -28,22 +33,32 @@ const useCrossDSPSongsFetcher = (
     
     useEffect(() => {
         async function getSongs() {
-
-            console.log(dspName)
+            let songs : DSPSongsResponse;
             switch (dspName) {
+
                 case DSPNames.ytmusic:
-                    const songs = await getGoogleSongsByQuery(
-                        query,
+                    songs = await getGoogleSongsByQuery(
+                        query.songName,
                         dspAccessTokensContext?.dspTokens.Google.AccessToken!
                     )
-                    setSongs(songs)
+                    setSongs(songs);
+                    break;
+
+                case DSPNames.spotify:
+                    songs = await getSpotifySongsByArtistAndName(
+                        query.songName,
+                        query.artistName
+                    );
+                    setSongs(songs);
+                    break;
+
                 default:
                     throw new Error(`Provided DSP: ${dspName} has no resources handler`)
             }
         }
 
         getSongs();
-    }, [query, dspName]);
+    }, [query.songName, query.artistName, dspName]);
 
     return songs;
 }

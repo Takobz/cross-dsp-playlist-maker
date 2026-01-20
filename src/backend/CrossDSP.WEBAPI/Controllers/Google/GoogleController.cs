@@ -34,15 +34,5 @@ namespace CrossDSP.WEBAPI.Controllers.Google
             var responses = result.ToSongSearchResponses();
             return Ok(new BaseResponse<SongSearchResponse>(responses));
         }
-
-        [HttpGet]
-        [Route("code")]
-        [AllowAnonymous]
-        public async Task<IActionResult> GetCode(
-            string codeKey
-        )
-        {
-            return Ok();
-        }
     }
 }

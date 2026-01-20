@@ -9,6 +9,7 @@ Who needs a sprint board for their own personal project - nobody baby!!
 - Spinner on waiting for access token
 - Deploy this to the Raspberry Pi
 - Figure out tailwindcss mess with styling.
+- Add expiry time to the cache basic token in the backend.
 
 ### Nicities
 

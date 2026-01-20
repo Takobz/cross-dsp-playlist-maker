@@ -60,3 +60,29 @@ export async function getGoogleSongsByQuery(
     })
     .then(apiResponse => apiResponse as DSPSongsResponse)
 }
+
+export async function getSpotifySongsByArtistAndName(
+    songName: string,
+    artistName?: string
+): Promise<DSPSongsResponse> {
+    const queryParams = artistName === undefined ?
+        `song_name=${songName}` : `artist_name=${artistName}&song_name=${songName}`;
+        
+    return await fetch(`dsp-api/spotify/search/song?${queryParams}`,
+        {
+            method: "GET"
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json()
+            }
+            else {
+                console.log(response);
+                throw Error("Failed To Get Google Token")
+            }
+        })
+        .then(apiResponse => {
+            return apiResponse as DSPSongsResponse
+        }
+    );
+}

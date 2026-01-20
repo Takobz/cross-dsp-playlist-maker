@@ -15,7 +15,9 @@ const SongPage = () => {
     const dspFromToSongsContext = useContext(DSPFromToSongsContext);
 
     const songs = useCrossDSPSongsFetcher(
-        "jaded",
+        {
+            songName: "jaded"
+        },
         DSPNames.ytmusic
     );
 
@@ -47,7 +49,9 @@ const SongPage = () => {
                     : <>No Songs</>
                 }
                 
+                
                 <div className="flex items-center justify-center w-full">
+                    {/*Add disabled when songs are not fetched yet*/}
                     <IconButton 
                         icon=""
                         text="Add"
