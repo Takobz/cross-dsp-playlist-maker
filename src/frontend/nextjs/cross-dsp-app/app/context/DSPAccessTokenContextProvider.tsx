@@ -1,6 +1,6 @@
 "use client"
 
-import { AppStorage, LocalStorage } from "@/utils/storage.util"
+import { AppStorage, LocalStorage } from "@/app/utils/storage.util"
 import { 
     createContext,
     ReactNode, 

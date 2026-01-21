@@ -5,16 +5,20 @@ Who needs a sprint board for their own personal project - nobody baby!!
 ## What I am doing Now
 
 - **Styling fixes LATER - get mvp up**
+- Move function switches to functions util.
 - Add track via Add Btn to Spotify
 - Spinner on waiting for access token
 - Deploy this to the Raspberry Pi
 - Figure out tailwindcss mess with styling.
+
+### Bugs
+
 - Add expiry time to the cache basic token in the backend.
+- local storage init instantiation null ref error. (Low Priority)
 
 ### Nicities
 
 - Use HttpOnly cookie for storing access tokens in client code.
-- Fix double windows opening bug
 
 ## What I have done
 

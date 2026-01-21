@@ -3,7 +3,7 @@
 import { createContext, ReactNode, useState } from "react"
 import { DSPSongDataResponse } from "../lib/cross-dsp-api-models"
 import { DSPNames } from "../lib/definitions"
-import { AppStorage, LocalStorage } from "@/utils/storage.util"
+import { AppStorage, LocalStorage } from "@/app/utils/storage.util"
 
 export type ContextProps = {
     children: ReactNode

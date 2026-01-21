@@ -3,6 +3,8 @@ import { DSPSongsResponse } from "../lib/cross-dsp-api-models";
 import { getGoogleAccessToken, getGoogleRedirect, getGoogleSongsByQuery, getSpotifySongsByArtistAndName } from "../lib/cross-dsp-api-service"
 import { DSPNames } from "../lib/definitions"
 import { DSPAccessTokensContext } from "@/app/context/DSPAccessTokenContextProvider"
+import { DSPFromToSongsContext } from "../context/DSPFromToSongsContextProvider";
+import { getToSongsFunctions } from "../utils/dsp-functions.util";
 
 const useCrossDSPAuthorization = (dspName: DSPNames) => {
     switch (dspName) {
@@ -12,8 +14,6 @@ const useCrossDSPAuthorization = (dspName: DSPNames) => {
             throw new Error(`Provided DSP: ${dspName} has no authorization handler`);
     }
 }
-
-
 
 const useCrossDSPSongsFetcher = (
     query: {
@@ -36,6 +36,7 @@ const useCrossDSPSongsFetcher = (
             let songs : DSPSongsResponse;
             switch (dspName) {
 
+                //TODO: move getting function to functions util
                 case DSPNames.ytmusic:
                     songs = await getGoogleSongsByQuery(
                         query.songName,
@@ -61,6 +62,49 @@ const useCrossDSPSongsFetcher = (
     }, [query.songName, query.artistName, dspName]);
 
     return songs;
+}
+
+/**
+ * Gets correlating songs from one DSP to another.  
+ * Correlates songs from different DSPs using song name and artist name.  
+ * Uses DSPFromToSongsContext internally to find from songs and to function.
+ * @param onComplete - Listener to pass when fetching all songs is done.
+ */
+const useCrossDSPGetToSongs = (onComplete: (results: DSPSongsResponse[]) => void) => {
+    const dspFromToSongsContext = useContext(DSPFromToSongsContext);
+    if (dspFromToSongsContext === undefined || dspFromToSongsContext === null)
+        throw Error("use DSPFromToSongsContext in component wrapped by correct provider");
+
+    const toDSPName = dspFromToSongsContext?.dspFromToSongs.to!;
+    const getToSongsFunc = getToSongsFunctions(toDSPName);
+
+    useEffect(() => {
+        async function getToSongs(){
+            if (dspFromToSongsContext?.dspFromToSongs) {
+                let promises :Promise<DSPSongsResponse>[] = [];
+                const fromSongs = dspFromToSongsContext.dspFromToSongs.songs;
+                for (let i = 0; i < fromSongs.length; i ++){
+                    promises.push(getToSongsFunc(
+                        fromSongs[i].song_title,
+                        fromSongs[i].main_artist_name
+                    ))
+                }
+
+                try {
+                    const results = await Promise.all(promises);
+                    onComplete(results);
+                }
+                catch(err) {
+                    console.log(err);
+                }
+            }
+        }
+
+        if (dspFromToSongsContext?.dspFromToSongs) {
+            getToSongs();
+        }
+
+    }, [dspFromToSongsContext?.dspFromToSongs]);
 }
 
 let INTERVAL_ID: NodeJS.Timeout;
@@ -150,5 +194,6 @@ async function setDSPAccessToken(
 export { 
     useCrossDSPAuthorization,
     useDSPAccessTokenPoller,
-    useCrossDSPSongsFetcher
+    useCrossDSPSongsFetcher,
+    useCrossDSPGetToSongs
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import { dspNameFormatter } from "@/utils/dsp-formatter";
+import { dspNameFormatter } from "@/app/utils/dsp-formatter";
 import { useCrossDSPSongsFetcher } from "../hooks/cross-dsp-api-hooks"
 import { DSPNames } from "../lib/definitions";
 import DSPSong from "../ui/cards/DSPsong";
