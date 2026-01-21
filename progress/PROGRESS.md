@@ -5,7 +5,6 @@ Who needs a sprint board for their own personal project - nobody baby!!
 ## What I am doing Now
 
 - **Styling fixes LATER - get mvp up**
-- Get user Spotify access token
 - small form to create playlist
 - add tracks to playlist
 - Move function switches to functions util.
@@ -42,3 +41,4 @@ Who needs a sprint board for their own personal project - nobody baby!!
 - DSPAccessTokenContext to keep track of access tokens
 - Make token utils use local storage for persisting the token for x amount of time.
 - Add expiry time to the cache basic token in the backend.
+- Get user Spotify access token UI

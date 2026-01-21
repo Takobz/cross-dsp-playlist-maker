@@ -7,6 +7,10 @@ Currently supported platforms:
 
 Many more integrations coming.
 
+## Project Task
+
+- [Progress](./progress/PROGRESS.md)
+
 ## Features
 
 - Search YouTube songs
