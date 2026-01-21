@@ -7,7 +7,8 @@ import FollowRedirect from '../shared/follow-redirect'
 
 const LoadRedirect = ({ 
         getRedirectFunction, 
-        dspName
+        dspName,
+        authReason
     }: LoadRedirectProps) => {
     const [redirect, setRedirect] = useState<string>("");
     const [authorizationState, setAuthorizationState] = useState<string>("");
@@ -27,6 +28,7 @@ const LoadRedirect = ({
         {redirect ? 
             <FollowRedirect 
                 dspName={dspName} 
+                authReason={authReason}
                 redirectURL={redirect} 
                 authorizationState={authorizationState}
             /> : <></>

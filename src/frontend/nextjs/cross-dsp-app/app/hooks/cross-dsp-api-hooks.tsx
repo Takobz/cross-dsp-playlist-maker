@@ -1,18 +1,13 @@
 import { useContext, useEffect, useState } from "react";
-import { DSPSongsResponse } from "../lib/cross-dsp-api-models";
+import { DSPAccessTokenResponse, DSPSongsResponse } from "../lib/cross-dsp-api-models";
 import { getGoogleAccessToken, getGoogleRedirect, getGoogleSongsByQuery, getSpotifySongsByArtistAndName } from "../lib/cross-dsp-api-service"
 import { DSPNames } from "../lib/definitions"
 import { DSPAccessTokensContext } from "@/app/context/DSPAccessTokenContextProvider"
 import { DSPFromToSongsContext } from "../context/DSPFromToSongsContextProvider";
-import { getToSongsFunctions } from "../utils/dsp-functions.util";
+import { getAccessTokenFunction, getDSPRedirectFunction, getDSPToSongsFunction } from "../utils/dsp-functions.util";
 
 const useCrossDSPAuthorization = (dspName: DSPNames) => {
-    switch (dspName) {
-        case DSPNames.ytmusic:
-            return getGoogleRedirect;
-        default:
-            throw new Error(`Provided DSP: ${dspName} has no authorization handler`);
-    }
+    return getDSPRedirectFunction(dspName);
 }
 
 const useCrossDSPSongsFetcher = (
@@ -76,7 +71,7 @@ const useCrossDSPGetToSongs = (onComplete: (results: DSPSongsResponse[]) => void
         throw Error("use DSPFromToSongsContext in component wrapped by correct provider");
 
     const toDSPName = dspFromToSongsContext?.dspFromToSongs.to!;
-    const getToSongsFunc = getToSongsFunctions(toDSPName);
+    const getToSongsFunc = getDSPToSongsFunction(toDSPName);
 
     useEffect(() => {
         async function getToSongs(){
@@ -105,6 +100,11 @@ const useCrossDSPGetToSongs = (onComplete: (results: DSPSongsResponse[]) => void
         }
 
     }, [dspFromToSongsContext?.dspFromToSongs]);
+
+    return { 
+        fromDSPName: dspFromToSongsContext.dspFromToSongs.from,
+        toDSPName: dspFromToSongsContext.dspFromToSongs.to
+    }
 }
 
 let INTERVAL_ID: NodeJS.Timeout;
@@ -139,19 +139,13 @@ const accessTokenPoller = async (
     dspAccessTokenContext: DSPAccessTokensContext,
     onPollComplete: () => void
 ) => {      
-    switch (dspName) {
-        case DSPNames.ytmusic:
-            await setDSPAccessToken(
-                dspName, 
-                authorizationState,
-                dspAccessTokenContext!,
-                onPollComplete
-            );
-            break;
 
-        default:
-            throw new Error(`Provided DSP: ${dspName} not supported.`);
-    }
+    await setDSPAccessToken(
+        dspName, 
+        authorizationState,
+        dspAccessTokenContext!,
+        onPollComplete
+    );
 };
 
 async function setDSPAccessToken(
@@ -161,7 +155,8 @@ async function setDSPAccessToken(
     onPollComplete: () => void
 ) {
     const currentTokens = dspAccessTokensContext.dspTokens;
-    const token = await getGoogleAccessToken(authorizationState);
+    const accessTokenFunc = getAccessTokenFunction(dspName);
+    const token = await accessTokenFunc(authorizationState);
 
     if (token.data) {
         clearInterval(INTERVAL_ID);
@@ -177,6 +172,18 @@ async function setDSPAccessToken(
                         ExpiresIn: token.data.expires_in
                     }
                 });
+                onPollComplete();
+                break;
+
+            case DSPNames.spotify:
+                dspAccessTokensContext.setDSPTokens({
+                    ...currentTokens,
+                    Spotify: {
+                        AccessToken: token.data.access_token,
+                        RefreshToken: token.data.refresh_token,
+                        ExpiresIn: token.data.expires_in
+                    }
+                })
                 onPollComplete();
                 break;
 

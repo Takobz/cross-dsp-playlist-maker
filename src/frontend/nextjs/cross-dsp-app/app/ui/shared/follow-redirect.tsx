@@ -1,7 +1,7 @@
 'use client'
 
 import { useDSPAccessTokenPoller } from "@/app/hooks/cross-dsp-api-hooks";
-import { DSPNames } from "@/app/lib/definitions";
+import { DSPAuthReasons, DSPNames } from "@/app/lib/definitions";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -9,12 +9,14 @@ interface FollowRedirectProps {
     redirectURL: string,
     dspName: DSPNames,
     authorizationState: string
+    authReason: DSPAuthReasons
 }
 
 const FollowRedirect = ({
     redirectURL,
     dspName,
-    authorizationState
+    authorizationState,
+    authReason
 }: FollowRedirectProps) => {
     const [isPollingDone, setIsPollingDone] = useState(false);
     const navigate = useRouter();
@@ -28,11 +30,14 @@ const FollowRedirect = ({
         authorizationState,
         () => {
             setIsPollingDone(true)
-            navigate.push("song-search");
+            if (authReason === DSPAuthReasons.getFromSongs) {
+                navigate.push("song-search");
+            }
+            else if (authReason === DSPAuthReasons.getToSongs){
+                navigate.push("playlist/create")
+            }
         }
     );
-
-    //find a way to know we are done polling...
 
     return (
         <>

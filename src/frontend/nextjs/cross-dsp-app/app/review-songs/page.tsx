@@ -6,13 +6,20 @@ import DSPSong from "../ui/cards/DSPsong";
 import { dspNameFormatter } from "@/app/utils/dsp-formatter";
 import IconButton from "../ui/buttons/icon-button";
 import { useCrossDSPGetToSongs } from "../hooks/cross-dsp-api-hooks";
+import { useRouter } from "next/navigation";
+import { DSPAuthReasons } from "../lib/definitions";
 
 const ReviewSongs = () => {
     const [toSongs, setToSongs] = useState<DSPSongsResponse[]>();
+    const router = useRouter();
 
-    useCrossDSPGetToSongs(
+    const { toDSPName } = useCrossDSPGetToSongs(
         (results: DSPSongsResponse[]) => setToSongs(results)
     );
+
+    const onSongsAdd = () => {
+        router.push(`authorize-init?dsp=${toDSPName}&reason=${DSPAuthReasons.getToSongs}`);
+    }
 
     return (
         <>
@@ -39,7 +46,7 @@ const ReviewSongs = () => {
                         <IconButton 
                             icon=""
                             text="Add"
-                            onClick={() => alert("Click click... Boom!")}
+                            onClick={() => onSongsAdd()}
                         />
                     </div>
                 </main>

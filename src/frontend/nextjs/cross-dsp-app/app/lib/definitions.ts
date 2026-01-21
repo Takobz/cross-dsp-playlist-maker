@@ -16,7 +16,8 @@ export type SelectDSPImageProps = {
 
 export interface LoadRedirectProps {
     getRedirectFunction: () => Promise<AuthorizationCodeFlowURLResponse> ,
-    dspName: DSPNames
+    dspName: DSPNames,
+    authReason: DSPAuthReasons
 }
 
 export enum DSPNames {
@@ -29,4 +30,14 @@ export enum DSPNames {
 export enum DSPDisplayNames {
     ytmusic = 'YouTube Music',
     spotify = 'Spotify'
+}
+
+/**
+ * Enum to help the FollowRedirect component know where to take you after auth.    
+ * getFromSongs will redirect to song-search page.  
+ * getToSongs will redirect to playlist/create page
+ */
+export enum DSPAuthReasons {
+    getFromSongs = 'getFromSongs',
+    getToSongs = 'getToSongs'
 }

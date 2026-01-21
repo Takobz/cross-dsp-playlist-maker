@@ -92,8 +92,8 @@ const DSPAccessTokenContextProvider = ({ children } : ContextProps) => {
             tokens.Spotify.AccessToken !== ""
         ) {
             storage.setItemByKey(
-                GOOGLE_KEY,
-                tokens.Google 
+                SPOTIFY_KEY,
+                tokens.Spotify 
             );
         }
 

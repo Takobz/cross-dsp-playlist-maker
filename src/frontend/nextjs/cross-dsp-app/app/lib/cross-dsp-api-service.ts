@@ -4,6 +4,11 @@ import {
     DSPSongsResponse
 } from "./cross-dsp-api-models";
 
+/*
+ * I know functions in here have the same signature and URLs are the only thing that is dynamic.
+ * I will work the strength to refactor these just putting this comment here for my sanity.  
+ */
+
 export async function getGoogleRedirect(): Promise<AuthorizationCodeFlowURLResponse> {
     return await fetch(`dsp-api/auth/google-init`)
         .then(response => {
@@ -59,6 +64,40 @@ export async function getGoogleSongsByQuery(
         }
     })
     .then(apiResponse => apiResponse as DSPSongsResponse)
+}
+
+export async function getSpotifyRedirect(): Promise<AuthorizationCodeFlowURLResponse> {
+    return await fetch(`dsp-api/auth/spotify-init`)
+        .then(response => {
+            if (response.ok) {
+                return response.json()
+            }
+            else {
+                console.log(response);
+                throw Error("Failed To Get Google Token")
+            }
+        })
+        .then(apiResponse => {
+            return apiResponse as AuthorizationCodeFlowURLResponse
+        }
+    );
+}
+
+export async function getSpotifyAccessToken(authorizationState: string): Promise<DSPAccessTokenResponse> {
+    return await fetch(`dsp-api/auth/spotify-token?authorization_state=${authorizationState}`)
+        .then(response => {
+            if (response.ok){
+                return response.json();
+            }
+            else {
+                console.log(response);
+                throw new Error("Failed to get Google Token");
+            }
+        })
+        .then(apiResponse => {
+            return apiResponse as DSPAccessTokenResponse;
+        }
+    );
 }
 
 export async function getSpotifySongsByArtistAndName(

@@ -1,6 +1,6 @@
 'use client'
 
-import { SelectDSPImageProps } from "@/app/lib/definitions";
+import { DSPAuthReasons, SelectDSPImageProps } from "@/app/lib/definitions";
 import Image from "next/image";
 import './selectDSP.css'
 import { useRouter } from "next/navigation";
@@ -13,7 +13,7 @@ const SelectDSP = ({
     const router = useRouter(); 
     const onSelectDSPTile = () => {
         router.push(
-            `authorize-init?from=${fromImage.dspName}&to=${toImage.dspName}`
+            `authorize-init?dsp=${fromImage.dspName}&reason=${DSPAuthReasons.getFromSongs}`
         );
     }
 
