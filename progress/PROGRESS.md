@@ -13,7 +13,6 @@ Who needs a sprint board for their own personal project - nobody baby!!
 
 ### Bugs
 
-- Add expiry time to the cache basic token in the backend.
 - local storage init instantiation null ref error. (Low Priority)
 
 ### Nicities
@@ -39,3 +38,4 @@ Who needs a sprint board for their own personal project - nobody baby!!
 - Poll the backend with they key.
 - DSPAccessTokenContext to keep track of access tokens
 - Make token utils use local storage for persisting the token for x amount of time.
+- Add expiry time to the cache basic token in the backend.

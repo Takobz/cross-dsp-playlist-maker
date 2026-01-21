@@ -59,7 +59,16 @@ namespace CrossDSP.Infrastructure.HttpClientInfra.DelegatingHandlers
                         cancellationToken: cancellationToken
                     );
 
-                    _memoryCache.Set(_spotifyAccessToken, accessToken);
+                    /*
+                    * Spotify client credential tokens last 3600 seconds
+                    * Making the cache expire 10 minutes earlier (3000 seconds).
+                    */  
+                    var cacheExpiryInSeconds = 3000;
+                    _memoryCache.Set(
+                        _spotifyAccessToken, 
+                        accessToken,
+                        TimeSpan.FromSeconds(cacheExpiryInSeconds)
+                    );
                 }
                 else throw new Exception("Failed to get access token from spotify api.");
             }
