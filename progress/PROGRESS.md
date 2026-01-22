@@ -5,8 +5,8 @@ Who needs a sprint board for their own personal project - nobody baby!!
 ## What I am doing Now
 
 - **Styling fixes LATER - get mvp up**
-- small form to create playlist
-- add tracks to playlist
+- list user play lists
+- add tracks to playlist on playlist click.
 - Move function switches to functions util.
 - Add track via Add Btn to Spotify
 - Spinner on waiting for access token

@@ -34,7 +34,7 @@ const FollowRedirect = ({
                 navigate.push("song-search");
             }
             else if (authReason === DSPAuthReasons.getToSongs){
-                navigate.push("playlist/create")
+                navigate.push("playlist")
             }
         }
     );
