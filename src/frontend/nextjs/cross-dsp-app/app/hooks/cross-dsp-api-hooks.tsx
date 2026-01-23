@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { DSPAccessTokenResponse, DSPSongsResponse } from "../lib/cross-dsp-api-models";
+import { DSPAccessTokenResponse, DSPSongDataResponse, DSPSongsResponse } from "../lib/cross-dsp-api-models";
 import { getGoogleAccessToken, getGoogleRedirect, getGoogleSongsByQuery, getSpotifySongsByArtistAndName } from "../lib/cross-dsp-api-service"
 import { DSPNames } from "../lib/definitions"
 import { DSPAccessTokensContext } from "@/app/context/DSPAccessTokenContextProvider"
@@ -77,7 +77,7 @@ const useCrossDSPGetToSongs = (onComplete: (results: DSPSongsResponse[]) => void
         async function getToSongs(){
             if (dspFromToSongsContext?.dspFromToSongs) {
                 let promises :Promise<DSPSongsResponse>[] = [];
-                const fromSongs = dspFromToSongsContext.dspFromToSongs.songs;
+                const fromSongs = dspFromToSongsContext.dspFromToSongs.fromSongs;
                 for (let i = 0; i < fromSongs.length; i ++){
                     promises.push(getToSongsFunc(
                         fromSongs[i].song_title,
@@ -88,6 +88,10 @@ const useCrossDSPGetToSongs = (onComplete: (results: DSPSongsResponse[]) => void
                 try {
                     const results = await Promise.all(promises);
                     onComplete(results);
+                    setDefaultSongsToAddToPlaylist(
+                        results,
+                        dspFromToSongsContext
+                    );
                 }
                 catch(err) {
                     console.log(err);
@@ -99,7 +103,7 @@ const useCrossDSPGetToSongs = (onComplete: (results: DSPSongsResponse[]) => void
             getToSongs();
         }
 
-    }, [dspFromToSongsContext?.dspFromToSongs]);
+    }, [dspFromToSongsContext?.dspFromToSongs.fromSongs]);
 
     return { 
         fromDSPName: dspFromToSongsContext.dspFromToSongs.from,
@@ -147,6 +151,28 @@ const accessTokenPoller = async (
         onPollComplete
     );
 };
+
+
+/**INTERNAL METHODS**/
+
+const setDefaultSongsToAddToPlaylist = (
+    toSongs: DSPSongsResponse[],
+    dspFromToSongsContext: DSPFromToSongsContext
+) => {
+    const defaultSongs = toSongs.map((songsMatched) => {
+        if (songsMatched.data_items.length > 0) {
+            return songsMatched.data_items[0]
+        }
+    });
+
+    const currentDSPFromToSongs = dspFromToSongsContext.dspFromToSongs;
+    if (defaultSongs !== undefined) {
+        dspFromToSongsContext.setDSPFromToSongs({
+            ...currentDSPFromToSongs,
+            toSongs: defaultSongs as DSPSongDataResponse[]
+        })
+    }
+}
 
 async function setDSPAccessToken(
     dspName: DSPNames, 

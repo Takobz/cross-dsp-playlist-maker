@@ -26,7 +26,8 @@ const SongPage = () => {
             dspFromToSongsContext?.setDSPFromToSongs({
                 from: DSPNames.ytmusic,
                 to: DSPNames.spotify,
-                songs: songs.data_items
+                fromSongs: songs.data_items,
+                toSongs: []
             });
 
             router.push("review-songs");

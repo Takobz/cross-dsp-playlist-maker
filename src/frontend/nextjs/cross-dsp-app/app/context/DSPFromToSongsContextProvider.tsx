@@ -9,26 +9,28 @@ export type ContextProps = {
     children: ReactNode
 }
 
-export type DSPFromSongs = {
+export type DSPFromToSongs = {
     from: DSPNames
     to: DSPNames
-    songs: DSPSongDataResponse[]
+    fromSongs: DSPSongDataResponse[],
+    toSongs: DSPSongDataResponse[]
 }
 
 export type DSPFromToSongsContext = {
-    dspFromToSongs: DSPFromSongs,
-    setDSPFromToSongs: (fromToSongs: DSPFromSongs) => void;
+    dspFromToSongs: DSPFromToSongs,
+    setDSPFromToSongs: (fromToSongs: DSPFromToSongs) => void;
 } 
 
 const FROM_TO_KEY = "FROM-TO-DATA";
-const defaultDSPFromToSongs = (storage: AppStorage) : DSPFromSongs => {
-    let fromToSongs : DSPFromSongs = {
+const defaultDSPFromToSongs = (storage: AppStorage) : DSPFromToSongs => {
+    let fromToSongs : DSPFromToSongs = {
         from: DSPNames.ytmusic,
         to: DSPNames.spotify,
-        songs: []
+        fromSongs: [],
+        toSongs: []
     } 
 
-    const fromToResult = storage.getItemByKey<DSPFromSongs>(FROM_TO_KEY);
+    const fromToResult = storage.getItemByKey<DSPFromToSongs>(FROM_TO_KEY);
     if (fromToResult.isSuccess) fromToSongs = fromToResult.data!;
 
     return fromToSongs;
@@ -38,10 +40,10 @@ const DSPFromToSongsContext = createContext<DSPFromToSongsContext | undefined>(u
 
 const DSPFromToSongsContextProvider = ({ children } : ContextProps) => {
     const storage = new LocalStorage();
-    const [fromToSongs, setFromToSongs] = useState<DSPFromSongs>(defaultDSPFromToSongs(storage));
+    const [fromToSongs, setFromToSongs] = useState<DSPFromToSongs>(defaultDSPFromToSongs(storage));
 
-    const setAndStoreDSPFromToSongs = (fromToSongs: DSPFromSongs) => {
-        storage.setItemByKey<DSPFromSongs>(FROM_TO_KEY, fromToSongs);
+    const setAndStoreDSPFromToSongs = (fromToSongs: DSPFromToSongs) => {
+        storage.setItemByKey<DSPFromToSongs>(FROM_TO_KEY, fromToSongs);
         setFromToSongs(fromToSongs);
     }
 
