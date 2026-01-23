@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { DSPFromToSongsContext } from "../context/DSPFromToSongsContextProvider";
 import { DSPAccessTokensContext } from "../context/DSPAccessTokenContextProvider";
+import { DSPUsersContext } from "../context/DSPUsersContextProvider";
 
 export const useDSPFromToSongsContext = () => {
     const dspFromToSongsContext = useContext(DSPFromToSongsContext);
@@ -22,4 +23,15 @@ export const useDSPAccessTokensContext = () => {
     }
 
     return dspAccessTokensContext;
+}
+
+export const useDSPUsersContext = () => {
+    const dspUsersContext = useContext(DSPUsersContext);
+    if (dspUsersContext === undefined){
+        throw Error(
+            `${typeof(dspUsersContext)} should be used in components wrapped by the context provider`
+        );
+    }
+
+    return dspUsersContext;
 }

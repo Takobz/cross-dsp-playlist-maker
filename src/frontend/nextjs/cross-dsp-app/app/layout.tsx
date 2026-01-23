@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "./ui/layout/header";
 import { DSPAccessTokenContextProvider } from "./context/DSPAccessTokenContextProvider";
 import { DSPFromToSongsContextProvider } from "./context/DSPFromToSongsContextProvider";
+import { DSPUsersContextProvider } from "./context/DSPUsersContextProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,14 +29,16 @@ export default function RootLayout({
   return (
     <DSPAccessTokenContextProvider>
       <DSPFromToSongsContextProvider>
-        <html lang="en">
-          <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-          >
-            <Header />
-            {children}
-          </body>
-        </html>
+        <DSPUsersContextProvider>
+          <html lang="en">
+            <body
+              className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+            >
+              <Header />
+              {children}
+            </body>
+          </html>
+        </DSPUsersContextProvider>
       </DSPFromToSongsContextProvider>
     </DSPAccessTokenContextProvider>
   );

@@ -1,7 +1,9 @@
 import { 
     AuthorizationCodeFlowURLResponse, 
     DSPAccessTokenResponse, 
-    DSPSongsResponse
+    DSPPlaylistsResponse, 
+    DSPSongsResponse,
+    DSPUserResponse
 } from "./cross-dsp-api-models";
 
 /*
@@ -122,6 +124,53 @@ export async function getSpotifySongsByArtistAndName(
         })
         .then(apiResponse => {
             return apiResponse as DSPSongsResponse
+        }
+    );
+}
+
+export async function getSpotifyUser(accessToken: string) : Promise<DSPUserResponse> {
+    return await fetch(`spotify/user`, 
+        {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${accessToken}`
+            }
+        })
+        .then(response => {
+            if (response.ok){
+                return response.json();
+            } else {
+                console.log(response);
+                throw Error("Failed To Get Spotify User")
+            }
+        })
+        .then(apiResponse => {
+            return apiResponse as DSPUserResponse
+        }
+    );
+}
+
+export async function getSpotifyUserPlaylists(
+    userId: string,
+    accessToken: string
+) : Promise<DSPPlaylistsResponse>{
+    return await fetch(`spotify/user/${userId}/playlists`, 
+        {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${accessToken}`
+            }
+        })
+        .then(response => {
+            if (response.ok){
+                return response.json();
+            } else {
+                console.log(response);
+                throw Error("Failed To Get Spotify User Playlists")
+            }
+        })
+        .then(apiResponse => {
+            return apiResponse as DSPPlaylistsResponse
         }
     );
 }

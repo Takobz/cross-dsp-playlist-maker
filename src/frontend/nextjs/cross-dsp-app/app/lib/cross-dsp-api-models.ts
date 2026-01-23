@@ -29,6 +29,38 @@ export type DSPSongsResponse = {
     error_messages: []
 }
 
+export type DSPUserResponse = {
+    data: DSPUserData,
+    error_message: string[]
+}
+
+export type DSPUserData = {
+    user_id: {
+        dsp: SongDSP,
+        id: string
+    },
+    user_name: string
+}
+
+export type DSPPlaylistsResponse = {
+    data_items: DSPPlaylistData[],
+    error_messages: string[]
+}
+
+export type DSPPlaylistResponse = {
+    data: DSPPlaylistData,
+    error_messages: string[]
+}
+
+export type DSPPlaylistData = {
+    playlist_id: {
+        dsp: string,
+        id: string
+    },
+    playlist_name: string,
+    playlist_description: string
+}
+
 export enum SongDSP {
     ytmusic = "YouTube Music",
     spotify = "Spotify"
