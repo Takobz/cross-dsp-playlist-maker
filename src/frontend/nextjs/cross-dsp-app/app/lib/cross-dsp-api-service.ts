@@ -129,7 +129,7 @@ export async function getSpotifySongsByArtistAndName(
 }
 
 export async function getSpotifyUser(accessToken: string) : Promise<DSPUserResponse> {
-    return await fetch(`spotify/user`, 
+    return await fetch(`dsp-api/spotify/user`, 
         {
             method: "GET",
             headers: {
@@ -154,7 +154,7 @@ export async function getSpotifyUserPlaylists(
     userId: string,
     accessToken: string
 ) : Promise<DSPPlaylistsResponse>{
-    return await fetch(`spotify/user/${userId}/playlists`, 
+    return await fetch(`dsp-api/spotify/user/${userId}/playlists`, 
         {
             method: "GET",
             headers: {

@@ -1,3 +1,5 @@
+'use client'
+
 import { createContext, ReactNode, useState } from "react"
 import { DSPUserData } from "../lib/cross-dsp-api-models"
 import { AppStorage, LocalStorage } from "../utils/storage.util"

@@ -4,8 +4,8 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       {
-        source: '/dsp-api/:path*',
-        destination: 'http://localhost:5080/:path*'
+        source: '/:path*/dsp-api/:rest*',
+        destination: 'http://localhost:5080/:rest*'
       }
     ]
   },
