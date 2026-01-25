@@ -20,6 +20,14 @@ export interface LoadRedirectProps {
     authReason: DSPAuthReasons
 }
 
+export interface PlaylistItem {
+    ItemId: string
+}
+
+export interface AddPlaylistItemResult {
+    isSuccess: boolean;
+}
+
 export enum DSPNames {
     ytmusic = 'ytmusic',
     spotify = 'spotify',

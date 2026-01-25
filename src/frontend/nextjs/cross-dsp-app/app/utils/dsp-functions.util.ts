@@ -1,8 +1,8 @@
 // Util for getting different functions based on dsp name provided.
 
 import { AuthorizationCodeFlowURLResponse, DSPAccessTokenResponse, DSPPlaylistsResponse, DSPSongsResponse, DSPUserResponse } from "../lib/cross-dsp-api-models";
-import { getGoogleAccessToken, getGoogleRedirect, getSpotifyAccessToken, getSpotifyRedirect, getSpotifySongsByArtistAndName, getSpotifyUser, getSpotifyUserPlaylists } from "../lib/cross-dsp-api-service";
-import { DSPNames } from "../lib/definitions";
+import { addItemsToSpotifyPlaylist, getGoogleAccessToken, getGoogleRedirect, getSpotifyAccessToken, getSpotifyRedirect, getSpotifySongsByArtistAndName, getSpotifyUser, getSpotifyUserPlaylists } from "../lib/cross-dsp-api-service";
+import { AddPlaylistItemResult, DSPNames, PlaylistItem } from "../lib/definitions";
 
 export const getDSPToSongsFunction = (dspName: DSPNames) 
     : ((songName: string, artistName: string) => Promise<DSPSongsResponse>) => {
@@ -56,5 +56,15 @@ export const getUserPlaylistFunction = (dspName: DSPNames)
             return getSpotifyUserPlaylists;
         default:
             throw new Error(`DSP: ${dspName} has no get user function`);
+    }
+}
+
+export const getAddToPlaylistFunction = (dspName: DSPNames)
+    : ((playlistId: string, accessToken: string, items: PlaylistItem[]) => Promise<AddPlaylistItemResult>) => {
+    switch(dspName) {
+        case DSPNames.spotify:
+            return addItemsToSpotifyPlaylist;
+        default:
+            throw new Error(`DSP: ${dspName} has no add to list function`)
     }
 }

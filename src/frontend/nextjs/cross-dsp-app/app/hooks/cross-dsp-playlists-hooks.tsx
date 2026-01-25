@@ -1,8 +1,9 @@
 import { useEffect } from "react";
-import { DSPNames } from "../lib/definitions";
+import { DSPNames, PlaylistItem } from "../lib/definitions";
 import { useDSPAccessTokensContext, useDSPUsersContext } from "./context-hooks";
-import { getUserFunction, getUserPlaylistFunction } from "../utils/dsp-functions.util";
-import { DSPPlaylistsResponse } from "../lib/cross-dsp-api-models";
+import { getAddToPlaylistFunction, getUserFunction, getUserPlaylistFunction } from "../utils/dsp-functions.util";
+import { DSPPlaylistsResponse, DSPSongDataResponse } from "../lib/cross-dsp-api-models";
+import { useDSPUser, useDSPUserAccessToken } from "./user-hooks";
 
 export const useUserDSPPlaylists = (
     dspName: DSPNames,
@@ -62,5 +63,38 @@ export const useUserDSPPlaylists = (
         }
 
         getUserPlaylists();
+    }, []);
+}
+
+export const useUserPlaylistAdd = (
+    dspName: DSPNames,
+    playlistId: string,
+    songs: DSPSongDataResponse[],
+    onComplete: (isSuccess: boolean) => void
+) => {
+    const dspUser = useDSPUserAccessToken(dspName);
+    const addToPlaylistFunction = getAddToPlaylistFunction(dspName);
+
+    useEffect(() => {
+        async function addToPlaylist() {
+            const items = songs.map((song) => {
+                return {
+                    ItemId: song.song_id.id
+                } as PlaylistItem
+            })
+
+            const result = await addToPlaylistFunction(
+                playlistId,
+                dspUser?.AccessToken!,
+                items
+            );
+
+            onComplete(result.isSuccess);
+        }
+
+        if (songs.length) {
+            addToPlaylist();
+        }
+
     }, []);
 }

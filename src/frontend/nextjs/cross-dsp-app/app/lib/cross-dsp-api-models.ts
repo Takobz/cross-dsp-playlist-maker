@@ -58,7 +58,7 @@ export type DSPPlaylistData = {
         id: string
     },
     playlist_name: string,
-    playlist_description: string
+    playlist_discription: string
 }
 
 export enum SongDSP {

@@ -5,6 +5,7 @@ import {
     DSPSongsResponse,
     DSPUserResponse
 } from "./cross-dsp-api-models";
+import { AddPlaylistItemResult, PlaylistItem } from "./definitions";
 
 /*
  * I know functions in here have the same signature and URLs are the only thing that is dynamic.
@@ -171,6 +172,32 @@ export async function getSpotifyUserPlaylists(
         })
         .then(apiResponse => {
             return apiResponse as DSPPlaylistsResponse
+        }
+    );
+}
+
+export async function addItemsToSpotifyPlaylist(
+    playlistId: string,
+    accessToken: string,
+    items: PlaylistItem[]
+) : Promise<AddPlaylistItemResult> {
+    const songIds = items.map((item) => item.ItemId);
+    return await fetch(`dsp-api/spotify/playlists/${playlistId}`, 
+        {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${accessToken}`
+            },
+            body: JSON.stringify(songIds)
+        })
+        .then(response => {
+            const result = {
+                isSuccess: response.ok
+            }
+
+            if (!result.isSuccess) console.log(response);
+
+            return result;
         }
     );
 }
