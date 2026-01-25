@@ -4,9 +4,11 @@ import { useDSPFromToSongsContext } from "@/app/hooks/context-hooks";
 import { useUserDSPPlaylists } from "@/app/hooks/cross-dsp-playlists-hooks";
 import { DSPPlaylistsResponse } from "@/app/lib/cross-dsp-api-models";
 import PlaylistCard from "@/app/ui/playlist/playlist-card";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const PlaylistList = () => {
+    const router = useRouter();
     const [playlists, setPlaylists] = useState<DSPPlaylistsResponse | undefined>(undefined);
     const useDSPFromToContext = useDSPFromToSongsContext();
 
@@ -14,6 +16,12 @@ const PlaylistList = () => {
         useDSPFromToContext.dspFromToSongs.to,
         (playlists: DSPPlaylistsResponse) => setPlaylists(playlists)
     );
+
+    const onItemsAddedToPlaylist = (result: boolean) => {
+        if (result) {
+            router.push("/")
+        }
+    }
     
     return (
         <div className="flex min-h-screen items-center justify-center">
@@ -25,6 +33,7 @@ const PlaylistList = () => {
                             playlistId={playlist.playlist_id.id}
                             playlistName={playlist.playlist_name}
                             description={playlist.playlist_discription}
+                            onAddItemComplete={onItemsAddedToPlaylist}
                         />
                     )) :
                     <>No Playlists to show</>

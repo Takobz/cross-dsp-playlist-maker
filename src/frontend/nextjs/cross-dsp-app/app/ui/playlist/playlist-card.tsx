@@ -1,53 +1,60 @@
 'use client'
 
-import { useUserPlaylistAdd } from '@/app/hooks/cross-dsp-playlists-hooks'
 import './playlist-card.css'
 import { useDSPFromToSongsContext } from '@/app/hooks/context-hooks'
-import { useState } from 'react'
+import { PlaylistItem } from '@/app/lib/definitions'
+import { getAddToPlaylistFunction } from '@/app/utils/dsp-functions.util'
+import { useDSPUserAccessToken } from '@/app/hooks/user-hooks'
 
 type PlaylistCardProps = {
     playlistId: string
     playlistName: string,
-    description: string
+    description: string,
+    onAddItemComplete: (result: boolean) => void
 }
 
 const PlaylistCard = ({
     playlistId,
     playlistName,
-    description: descripion
-}: PlaylistCardProps) => {
-    const [isSuccess, setIsSuccess] = useState<boolean>(false);
+    description,
+    onAddItemComplete
+} : PlaylistCardProps) => {
     const dspFromToSongsContext = useDSPFromToSongsContext();
+    const dspUser = useDSPUserAccessToken(
+        dspFromToSongsContext.dspFromToSongs.to
+    );
 
-    const onComplete = (result: boolean) => {
-        setIsSuccess(result)
-    }
-
-    const onAddToPlaylist = () => {
-        useUserPlaylistAdd(
-            dspFromToSongsContext.dspFromToSongs.to,
-            playlistId,
-            dspFromToSongsContext.dspFromToSongs.toSongs,
-            onComplete
+    const onAddToPlaylist = async () => {
+        const addToPlaylistFunction = getAddToPlaylistFunction(
+            dspFromToSongsContext.dspFromToSongs.to
         );
+
+        const items = dspFromToSongsContext.dspFromToSongs.toSongs.filter(s => s != null).map((song) => {
+            return {
+                ItemId: song.song_id.id
+            } as PlaylistItem
+        });
+
+        const result = await addToPlaylistFunction(
+            playlistId,
+            dspUser?.AccessToken!,
+            items
+        );
+
+        onAddItemComplete(result.isSuccess);
     }
 
     return (
-        <>
-            {isSuccess ?
-                <div className="playlist-card-container">
-                    <h1>
-                        <strong>{playlistName}</strong>
-                    </h1>
-                    <p className="playlist-card-description ">{descripion}</p>
+        <div className="playlist-card-container">
+            <h1>
+                <strong>{playlistName}</strong>
+            </h1>
+            <p className="playlist-card-description ">{description}</p>
 
-                    <div className="playlist-add-button" onClick={onAddToPlaylist}>
-                        Add to Playlist
-                    </div>
-                </div> : <>Done Boy Bye!</>
-            }
-        </>
-
+            <div className="playlist-add-button" onClick={onAddToPlaylist}>
+                Add to Playlist
+            </div>
+        </div>
     );
 }
 
