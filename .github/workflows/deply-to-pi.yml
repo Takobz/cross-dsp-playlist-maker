@@ -1,0 +1,10 @@
+name: Deploy Web App To Pi
+run-name: Deploy App
+on:
+    push:
+        branches: [ main ]
+jobs:
+    Deploy-App:
+        runs-on: ubuntu-latest
+        steps:
+            - run: echo "${{ github.actor }}" Triggered the pipeline.
