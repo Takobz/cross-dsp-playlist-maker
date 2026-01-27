@@ -1,0 +1,28 @@
+.select-dsp-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 20px;
+    width: 80%;
+    background-color: rgb(31, 88, 88);
+}
+
+.select-dsp-container p {
+    margin: 15px;
+}
+
+.select-dsp-container .dsp-image-details {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 5px;
+}
+
+.dsp-image-details img {
+    margin-right: 30px;
+}
+
+.select-dsp-container:hover {
+    background-color: rgb(50, 130, 130);
+    cursor: pointer;
+}
