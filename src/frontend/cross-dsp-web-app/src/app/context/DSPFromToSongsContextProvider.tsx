@@ -1,9 +1,7 @@
-'use client'
-
-import { createContext, ReactNode, useState } from "react"
-import { DSPSongDataResponse } from "../lib/cross-dsp-api-models"
-import { DSPNames } from "../lib/definitions"
-import { AppStorage, LocalStorage } from "@/app/utils/storage.util"
+import { createContext, type ReactNode, useState } from "react"
+import { type DSPSongDataResponse } from "../../../../nextjs/cross-dsp-app/app/lib/cross-dsp-api-models"
+import { DSPNames } from "../../../../nextjs/cross-dsp-app/app/lib/definitions"
+import { type AppStorage, LocalStorage } from "../utils/storage.util"
 
 export type ContextProps = {
     children: ReactNode

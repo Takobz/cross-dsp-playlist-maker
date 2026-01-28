@@ -3,7 +3,7 @@ import { DSPAccessTokenResponse, DSPSongDataResponse, DSPSongsResponse } from ".
 import { getGoogleAccessToken, getGoogleRedirect, getGoogleSongsByQuery, getSpotifySongsByArtistAndName } from "../lib/cross-dsp-api-service"
 import { DSPNames } from "../lib/definitions"
 import { DSPAccessTokensContext } from "@/app/context/DSPAccessTokenContextProvider"
-import { DSPFromToSongsContext } from "../context/DSPFromToSongsContextProvider";
+import { DSPFromToSongsContext } from "../../../../cross-dsp-web-app/src/app/context/DSPFromToSongsContextProvider";
 import { getAccessTokenFunction, getDSPRedirectFunction, getDSPToSongsFunction } from "../utils/dsp-functions.util";
 
 const useCrossDSPAuthorization = (dspName: DSPNames) => {

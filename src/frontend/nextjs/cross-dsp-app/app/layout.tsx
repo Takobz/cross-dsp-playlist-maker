@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "./ui/layout/header";
 import { DSPAccessTokenContextProvider } from "./context/DSPAccessTokenContextProvider";
-import { DSPFromToSongsContextProvider } from "./context/DSPFromToSongsContextProvider";
+import { DSPFromToSongsContextProvider } from "../../../cross-dsp-web-app/src/app/context/DSPFromToSongsContextProvider";
 import { DSPUsersContextProvider } from "./context/DSPUsersContextProvider";
 
 const geistSans = Geist({

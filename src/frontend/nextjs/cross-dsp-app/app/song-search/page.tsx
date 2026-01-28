@@ -8,7 +8,7 @@ import IconButton from "../ui/buttons/icon-button";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect } from "react";
 import { DSPSongsResponse } from "../lib/cross-dsp-api-models";
-import { DSPFromToSongsContext } from "../context/DSPFromToSongsContextProvider";
+import { DSPFromToSongsContext } from "../../../../cross-dsp-web-app/src/app/context/DSPFromToSongsContextProvider";
 
 const SongPage = () => {
     const router = useRouter();
