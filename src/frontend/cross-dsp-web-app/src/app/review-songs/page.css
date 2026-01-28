@@ -1,42 +1,48 @@
-.song-page-container {
+.review-page-container {
   display: flex;
   min-height: 100vh;
   align-items: center;
   justify-content: center;
-  background-color: rgb(250, 250, 250); /* bg-zinc-50 */
+  background-color: rgb(255, 254, 254); /* bg-zinc-50 */
   font-family: sans-serif;
 }
 
-.song-page-container.dark {
+.review-page-container.dark {
   background-color: rgb(0, 0, 0); /* dark:bg-black */
 }
 
-.song-page-main {
+.review-page-main {
   display: flex;
   min-height: 100vh;
   width: 100%;
   max-width: 42rem; /* max-w-3xl */
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  padding-left: 4rem;
+  padding-right: 4rem;
   background-color: rgb(0, 0, 0);
   color: inherit;
   padding: 65px;
 }
 
-.song-page-main.dark {
+.review-page-main.dark {
   background-color: black;
 }
 
 /* Small screens (sm: 640px) */
 @media (max-width: 640px) {
-  .song-page-main {
+  .review-page-main {
     align-items: flex-start;
   }
 }
 
-.song-page-button {
+.review-page-button {
     display: flex;
     width: 100%;
     align-items: center;
     justify-content: center;
+    margin: 2px;
 }

@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react";
-import { DSPAccessTokenResponse, DSPSongDataResponse, DSPSongsResponse } from "../lib/cross-dsp-api-models";
-import { getGoogleAccessToken, getGoogleRedirect, getGoogleSongsByQuery, getSpotifySongsByArtistAndName } from "../lib/cross-dsp-api-service"
+import { DSPSongDataResponse, DSPSongsResponse } from "../lib/cross-dsp-api-models";
+import { getGoogleSongsByQuery, getSpotifySongsByArtistAndName } from "../lib/cross-dsp-api-service"
 import { DSPNames } from "../lib/definitions"
 import { DSPAccessTokensContext } from "@/app/context/DSPAccessTokenContextProvider"
-import { DSPFromToSongsContext } from "../../../../cross-dsp-web-app/src/app/context/DSPFromToSongsContextProvider";
+import { DSPFromToSongsContext } from "../context/DSPFromToSongsContextProvider";
 import { getAccessTokenFunction, getDSPRedirectFunction, getDSPToSongsFunction } from "../utils/dsp-functions.util";
 
 const useCrossDSPAuthorization = (dspName: DSPNames) => {

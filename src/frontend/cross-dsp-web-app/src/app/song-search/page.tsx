@@ -1,3 +1,4 @@
+import "./page.css"
 import { dspNameFormatter } from "../utils/dsp-formatter";
 import DSPSong from "../ui/cards/dsp-song/DSPsong";
 import Button from "../ui/buttons/button";
@@ -30,8 +31,8 @@ const SongPage = () => {
     }
 
     return (
-        <div className="page-container">
-            <main className="page-main">
+        <div className="song-page-container">
+            <main className="song-page-main">
                 {songs && songs.data_items ? songs.data_items.map(song => (
                     <DSPSong 
                         key={song.song_id.id}
@@ -44,7 +45,7 @@ const SongPage = () => {
                     : <>No Songs</>
                 }
                 
-                <div className="page-button">
+                <div className="song-page-button">
                     {/*Add disabled when songs are not fetched yet*/}
                     <Button
                         text="Add"
