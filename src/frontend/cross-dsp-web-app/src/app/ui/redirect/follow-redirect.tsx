@@ -30,10 +30,10 @@ const FollowRedirect = ({
         () => {
             setIsPollingDone(true)
             if (authReason === 'getFromSongs') {
-                navigate("song-search");
+                navigate("/song-search");
             }
             else if (authReason === 'getToSongs'){
-                navigate("playlist")
+                navigate("/playlist")
             }
         }
     );

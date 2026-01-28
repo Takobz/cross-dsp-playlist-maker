@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router";
 import App from "../App";
 import AuthorizePage from "./authorize-init/page";
+import SongPage from "./song-search/page";
 
 const routes = createBrowserRouter([
     {
@@ -10,6 +11,10 @@ const routes = createBrowserRouter([
     {
         path: "authorize-init",
         Component: AuthorizePage
+    },
+    {
+        path: "song-search",
+        Component: SongPage
     }
 ])
 

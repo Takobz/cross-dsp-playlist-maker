@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "../../cross-dsp-web-app/src/app/context/DSPFromToSongsContextProvider.tsx"  ],
+, "../../cross-dsp-web-app/src/app/context/DSPFromToSongsContextProvider.tsx", "../../cross-dsp-web-app/src/app/ui/buttons/button.tsx"  ],
   "exclude": ["node_modules"]
 }

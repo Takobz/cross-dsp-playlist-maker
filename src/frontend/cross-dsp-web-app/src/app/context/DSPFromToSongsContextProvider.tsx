@@ -1,7 +1,7 @@
 import { createContext, type ReactNode, useState } from "react"
-import { type DSPSongDataResponse } from "../../../../nextjs/cross-dsp-app/app/lib/cross-dsp-api-models"
-import { DSPNames } from "../../../../nextjs/cross-dsp-app/app/lib/definitions"
 import { type AppStorage, LocalStorage } from "../utils/storage.util"
+import type { DSPNames } from "../lib/definitions"
+import type { DSPSongDataResponse } from "../lib/cross-dsp-api-models"
 
 export type ContextProps = {
     children: ReactNode
@@ -22,8 +22,8 @@ export type DSPFromToSongsContext = {
 const FROM_TO_KEY = "FROM-TO-DATA";
 const defaultDSPFromToSongs = (storage: AppStorage) : DSPFromToSongs => {
     let fromToSongs : DSPFromToSongs = {
-        from: DSPNames.ytmusic,
-        to: DSPNames.spotify,
+        from: 'ytmusic',
+        to: 'spotify',
         fromSongs: [],
         toSongs: []
     } 
