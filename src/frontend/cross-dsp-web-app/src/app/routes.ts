@@ -3,6 +3,7 @@ import App from "../App";
 import AuthorizePage from "./authorize-init/page";
 import SongPage from "./song-search/page";
 import ReviewSongs from "./review-songs/page";
+import PlaylistPage from "./playlist/page";
 
 const routes = createBrowserRouter([
     {
@@ -20,6 +21,10 @@ const routes = createBrowserRouter([
     {
         path: "/review-songs",
         Component: ReviewSongs
+    },
+    {
+        path: "/playlist",
+        Component: PlaylistPage
     }
 ])
 
