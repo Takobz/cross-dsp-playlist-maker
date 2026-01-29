@@ -4,9 +4,9 @@ import DSPSong from "../ui/cards/dsp-song/DSPsong";
 import Button from "../ui/buttons/button";
 import { useContext } from "react";
 import { type DSPSongsResponse } from "../lib/cross-dsp-api-models";
-import { DSPFromToSongsContext } from "../../../../cross-dsp-web-app/src/app/context/DSPFromToSongsContextProvider";
 import { useNavigate } from "react-router";
 import { useCrossDSPSongsFetcher } from "../hooks/cross-dsp-songs-hooks";
+import { DSPFromToSongsContext } from "../context/DSPFromToSongsContextProvider";
 
 const SongPage = () => {
     const router = useNavigate();

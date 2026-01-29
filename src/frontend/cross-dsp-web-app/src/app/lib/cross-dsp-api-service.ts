@@ -12,8 +12,10 @@ import type { AddPlaylistItemResult, PlaylistItem } from "./definitions";
  * I will work the strength to refactor these just putting this comment here for my sanity.  
  */
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 export async function getGoogleRedirect(): Promise<AuthorizationCodeFlowURLResponse> {
-    return await fetch(`dsp-api/auth/google-init`)
+    return await fetch(`${API_BASE_URL}/auth/google-init`)
         .then(response => {
             if (response.ok) {
                 return response.json()
@@ -30,7 +32,7 @@ export async function getGoogleRedirect(): Promise<AuthorizationCodeFlowURLRespo
 }
 
 export async function getGoogleAccessToken(authorizationState: string): Promise<DSPAccessTokenResponse> {
-    return await fetch(`dsp-api/auth/google-token?authorization_state=${authorizationState}`)
+    return await fetch(`${API_BASE_URL}/auth/google-token?authorization_state=${authorizationState}`)
         .then(response => {
             if (response.ok){
                 return response.json();
@@ -51,7 +53,7 @@ export async function getGoogleSongsByQuery(
     beaerToken: string
 ): Promise<DSPSongsResponse>{
 
-    return await fetch(`dsp-api/google/search?query=${query}`, {
+    return await fetch(`${API_BASE_URL}/google/search?query=${query}`, {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${beaerToken}`
@@ -70,7 +72,7 @@ export async function getGoogleSongsByQuery(
 }
 
 export async function getSpotifyRedirect(): Promise<AuthorizationCodeFlowURLResponse> {
-    return await fetch(`dsp-api/auth/spotify-init`)
+    return await fetch(`${API_BASE_URL}/auth/spotify-init`)
         .then(response => {
             if (response.ok) {
                 return response.json()
@@ -87,7 +89,7 @@ export async function getSpotifyRedirect(): Promise<AuthorizationCodeFlowURLResp
 }
 
 export async function getSpotifyAccessToken(authorizationState: string): Promise<DSPAccessTokenResponse> {
-    return await fetch(`dsp-api/auth/spotify-token?authorization_state=${authorizationState}`)
+    return await fetch(`${API_BASE_URL}/auth/spotify-token?authorization_state=${authorizationState}`)
         .then(response => {
             if (response.ok){
                 return response.json();
@@ -110,7 +112,7 @@ export async function getSpotifySongsByArtistAndName(
     const queryParams = artistName === undefined ?
         `song_name=${songName}` : `artist_name=${artistName}&song_name=${songName}`;
         
-    return await fetch(`dsp-api/spotify/search/song?${queryParams}`,
+    return await fetch(`${API_BASE_URL}/spotify/search/song?${queryParams}`,
         {
             method: "GET"
         })
@@ -130,7 +132,7 @@ export async function getSpotifySongsByArtistAndName(
 }
 
 export async function getSpotifyUser(accessToken: string) : Promise<DSPUserResponse> {
-    return await fetch(`dsp-api/spotify/user`, 
+    return await fetch(`${API_BASE_URL}/spotify/user`, 
         {
             method: "GET",
             headers: {
@@ -155,7 +157,7 @@ export async function getSpotifyUserPlaylists(
     userId: string,
     accessToken: string
 ) : Promise<DSPPlaylistsResponse>{
-    return await fetch(`dsp-api/spotify/user/${userId}/playlists`, 
+    return await fetch(`${API_BASE_URL}/spotify/user/${userId}/playlists`, 
         {
             method: "GET",
             headers: {
@@ -182,7 +184,7 @@ export async function addItemsToSpotifyPlaylist(
     items: PlaylistItem[]
 ) : Promise<AddPlaylistItemResult> {
     const songIds = items.map((item) => item.ItemId);
-    return await fetch(`dsp-api/spotify/playlists/${playlistId}`, 
+    return await fetch(`${API_BASE_URL}/spotify/playlists/${playlistId}`, 
         {
             method: "POST",
             headers: {

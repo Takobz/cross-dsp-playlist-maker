@@ -50,7 +50,7 @@ builder.Services.AddAuthorizationBuilder()
 builder.Services.AddCors(options =>
 {
     var corsOptions = new CorsOptions();
-    builder.Configuration.Bind(corsOptions); 
+    builder.Configuration.GetSection(CorsOptions.SectionName).Bind(corsOptions); 
 
     options.AddPolicy(
     name: WebAppConstants.AllowCrossDSPFrontEndPolicy,

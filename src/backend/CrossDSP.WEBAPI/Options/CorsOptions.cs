@@ -4,6 +4,6 @@ namespace CrossDSP.WEBAPI.Options
     {
         public const string SectionName = "CorsOptions";
 
-        public string[] AllowedOrigins = [];
+        public string[] AllowedOrigins { get; set; } = [];
     }
 }
