@@ -1,33 +1,24 @@
-version: "3.8"
-
 networks:
   cross-dsp:
     driver: bridge
 
 services:
+
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    image: khutsokobela/cross-dsp-backend:latest
     ports:
       - "5080:5080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - DOTNET_RUNNING_IN_CONTAINER=true
       - ASPNETCORE_HTTP_PORTS=5080
-      # for GH Actions
-      
     networks:
       - cross-dsp
+
   react-frontend:
-    build:
-      context: ./frontend/cross-dsp-web-app
-      dockerfile: Dockerfile
-      args:
-        VITE_API_BASE_URL: http://localhost:5080 #need to provide .env vars in build yeah right!
+    image: khutsokobela/cross-dsp-frontend:latest
     ports:
       - "80:80"
-    
     depends_on:
       - backend
     networks:
