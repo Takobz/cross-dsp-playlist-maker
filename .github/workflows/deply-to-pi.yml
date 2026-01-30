@@ -29,3 +29,15 @@ jobs:
                 push: false
                 tags: khutsokobela/cross-dsp-backend:latest
                 platforms: linux/amd64,linux/arm64
+
+            - name: Build Frontend App Image
+              uses: docker/build-push-action@v6
+              with:
+                context: ${{ github.workspace }}/src/frontend/cross-dsp-web-app
+                file: ${{ github.workspace }}/src/frontend/cross-dsp-web-app/Dockerfile
+                push: false
+                tags: khutsokobela/cross-dsp-frontend:latest
+                platforms: linux/amd64,linux/arm64
+                build-args:
+                    #not really a secret - use secrets since varibles don't allow special chars
+                    VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}
