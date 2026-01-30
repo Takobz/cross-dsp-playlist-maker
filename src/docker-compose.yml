@@ -12,6 +12,10 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
       - DOTNET_RUNNING_IN_CONTAINER=true
       - ASPNETCORE_HTTP_PORTS=5080
+      - GoogleOAuth2Options__ClientId=$GOOGLE_CLIENT_ID
+      - GoogleOAuth2Options__ClientSecret=$GOOGLE_CLINET_SECRET
+      - SpotifyOAuth2Options__ClientId=$SPOTIFY_CLIENT_ID
+      - SpotifyOAuth2Options__ClientSecret=$SPOTIFY_CLIENT_SECRET
     networks:
       - cross-dsp
 
