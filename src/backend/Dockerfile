@@ -1,0 +1,19 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+
+# restore the solution
+WORKDIR /webapp-api
+COPY . ../webapp-api/
+RUN dotnet publish -c Release -o /app
+
+# execute DLL
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+WORKDIR /app 
+COPY --from=build /app ./
+
+ENV ASPNETCORE_ENVIRONMENT=Production
+ENV DOTNET_RUNNING_IN_CONTAINER=true
+
+EXPOSE 5080
+
+# use ENTRYPOINT in prod dockerfile, CMD for dev to allow us exec -it into the container
+ENTRYPOINT ["dotnet", "CrossDSP.WEBAPI.dll"]
