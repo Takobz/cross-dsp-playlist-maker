@@ -58,18 +58,20 @@ jobs:
                 source: "src/docker-compose.yml"
                 target: "~/cross-dsp/"
 
-            # - name: Create Env file
-            #   uses: appleboy/ssh-action@v1.0.0
-            #   with:
-            #     host: ${{ secrets.SSH_HOST }}
-            #     username: ${{ secrets.SSH_USERNAME }}
-            #     key: ${{ secrets.SSH_PRIVATE_KEY }}
-            #     script: |
-            #       cd ~/pi-web/src
-            #       ls -la
-            #       docker compose -f docker-compose.yml pull
-            #       docker compose -f docker-compose.yml up -d
-            #       docker image prune -f
+            - name: Create Compose Env file
+              uses: appleboy/ssh-action@v1.0.0
+              with:
+                host: ${{ secrets.SSH_HOST }}
+                username: ${{ secrets.SSH_USERNAME }}
+                key: ${{ secrets.SSH_PRIVATE_KEY }}
+                script: |
+                    cd ~/cross-dsp/src
+                    cat <<EOF > .env
+                    GOOGLE_CLIENT_ID=${{ secrets.GOOGLEOAUTH2OPTIONS__CLIENTID }}
+                    GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLEOAUTH2OPTIONS__CLIENTSECRET }}
+                    SPOTIFY_CLIENT_ID=${{ secrets.SPOTIFYOAUTH2OPTIONS__CLIENTID }}
+                    SPOTIFY_CLIENT_SECRET=${{ secrets.SPOTIFYOAUTH2OPTIONS__CLIENTSECRET }}
+                    EOF
 
             # - name: Deploy Compose file to Pi
             #   uses: appleboy/ssh-action@v1.0.0
