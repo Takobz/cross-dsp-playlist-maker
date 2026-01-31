@@ -21,23 +21,65 @@ jobs:
                 username: ${{ secrets.DOCKER_USERNAME }}
                 password: ${{ secrets.DOCKER_PAT_TOKEN }}
 
-            - name: Build Backend App Image
-              uses: docker/build-push-action@v6
-              with:
-                context: ${{ github.workspace }}/src/backend
-                file: ${{ github.workspace }}/src/backend/Dockerfile
-                push: true
-                tags: khutsokobela/cross-dsp-backend:latest
-                platforms: linux/amd64,linux/arm64
+            # - name: Build Backend App Image
+            #   uses: docker/build-push-action@v6
+            #   with:
+            #     context: ${{ github.workspace }}/src/backend
+            #     file: ${{ github.workspace }}/src/backend/Dockerfile
+            #     push: true
+            #     tags: khutsokobela/cross-dsp-backend:latest
+            #     platforms: linux/amd64,linux/arm64
 
-            - name: Build Frontend App Image
-              uses: docker/build-push-action@v6
+            # - name: Build Frontend App Image
+            #   uses: docker/build-push-action@v6
+            #   with:
+            #     context: ${{ github.workspace }}/src/frontend/cross-dsp-web-app
+            #     file: ${{ github.workspace }}/src/frontend/cross-dsp-web-app/Dockerfile
+            #     push: true
+            #     tags: khutsokobela/cross-dsp-frontend:latest
+            #     platforms: linux/amd64,linux/arm64
+            #     build-args:
+            #         #not really a secret - use secrets since varibles don't allow special chars
+            #         VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}
+
+            - name: Tailscale Authentication
+              uses: tailscale/github-action@v4
               with:
-                context: ${{ github.workspace }}/src/frontend/cross-dsp-web-app
-                file: ${{ github.workspace }}/src/frontend/cross-dsp-web-app/Dockerfile
-                push: true
-                tags: khutsokobela/cross-dsp-frontend:latest
-                platforms: linux/amd64,linux/arm64
-                build-args:
-                    #not really a secret - use secrets since varibles don't allow special chars
-                    VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}
+                oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+                oauth-secret: ${{ secrets.TS_OAUTH_CLIENT_SECRET }}
+                tags: tag:cross-dsp-gh-action
+
+            - name: Copy Compose file to Pi
+              uses: appleboy/scp-action@v1
+              with:
+                host: ${{ secrets.SSH_HOST }}
+                username: ${{ secrets.SSH_USERNAME }}
+                key: ${{ secrets.SSH_PRIVATE_KEY }}
+                source: "src/docker-compose.yml"
+                target: "~/cross-dsp/"
+
+            # - name: Create Env file
+            #   uses: appleboy/ssh-action@v1.0.0
+            #   with:
+            #     host: ${{ secrets.SSH_HOST }}
+            #     username: ${{ secrets.SSH_USERNAME }}
+            #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+            #     script: |
+            #       cd ~/pi-web/src
+            #       ls -la
+            #       docker compose -f docker-compose.yml pull
+            #       docker compose -f docker-compose.yml up -d
+            #       docker image prune -f
+
+            # - name: Deploy Compose file to Pi
+            #   uses: appleboy/ssh-action@v1.0.0
+            #   with:
+            #     host: ${{ secrets.SSH_HOST }}
+            #     username: ${{ secrets.SSH_USERNAME }}
+            #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+            #     script: |
+            #       cd ~/pi-web/src
+            #       ls -la
+            #       docker compose -f docker-compose.yml pull
+            #       docker compose -f docker-compose.yml up -d
+            #       docker image prune -f
