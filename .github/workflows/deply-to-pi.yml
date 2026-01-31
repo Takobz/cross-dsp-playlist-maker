@@ -73,15 +73,14 @@ jobs:
                     SPOTIFY_CLIENT_SECRET=${{ secrets.SPOTIFYOAUTH2OPTIONS__CLIENTSECRET }}
                     EOF
 
-            # - name: Deploy Compose file to Pi
-            #   uses: appleboy/ssh-action@v1.0.0
-            #   with:
-            #     host: ${{ secrets.SSH_HOST }}
-            #     username: ${{ secrets.SSH_USERNAME }}
-            #     key: ${{ secrets.SSH_PRIVATE_KEY }}
-            #     script: |
-            #       cd ~/pi-web/src
-            #       ls -la
-            #       docker compose -f docker-compose.yml pull
-            #       docker compose -f docker-compose.yml up -d
-            #       docker image prune -f
+            - name: Start Compose file in the Pi
+              uses: appleboy/ssh-action@v1.0.0
+              with:
+                host: ${{ secrets.SSH_HOST }}
+                username: ${{ secrets.SSH_USERNAME }}
+                key: ${{ secrets.SSH_PRIVATE_KEY }}
+                script: |
+                  cd ~/cross-dsp/src
+                  docker compose -f docker-compose.yml pull
+                  docker compose -f docker-compose.yml up -d
+                  docker image prune -f
