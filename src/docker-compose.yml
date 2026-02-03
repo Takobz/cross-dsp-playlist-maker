@@ -22,7 +22,7 @@ services:
   react-frontend:
     image: khutsokobela/cross-dsp-frontend:latest
     ports:
-      - "80:80"
+      - "3080:80"
     depends_on:
       - backend
     networks:
