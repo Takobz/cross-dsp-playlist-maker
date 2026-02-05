@@ -22,8 +22,18 @@ services:
   react-frontend:
     image: khutsokobela/cross-dsp-frontend:latest
     ports:
+      - "3090:80"
+    depends_on:
+      - backend
+    networks:
+      - cross-dsp
+
+  nginx-proxy:
+    image: khutsokobela/cross-dsp-proxy:latest
+    ports:
       - "3080:80"
     depends_on:
       - backend
+      - react-frontend
     networks:
       - cross-dsp

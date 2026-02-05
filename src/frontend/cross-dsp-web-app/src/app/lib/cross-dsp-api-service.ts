@@ -12,7 +12,7 @@ import type { AddPlaylistItemResult, PlaylistItem } from "./definitions";
  * I will work the strength to refactor these just putting this comment here for my sanity.  
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL = "api"; //import.meta.env.VITE_API_BASE_URL;
 
 export async function getGoogleRedirect(): Promise<AuthorizationCodeFlowURLResponse> {
     return await fetch(`${API_BASE_URL}/auth/google-init`)

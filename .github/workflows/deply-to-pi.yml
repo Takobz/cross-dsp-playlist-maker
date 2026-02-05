@@ -21,6 +21,15 @@ jobs:
                 username: ${{ secrets.DOCKER_USERNAME }}
                 password: ${{ secrets.DOCKER_PAT_TOKEN }}
 
+            - name: Build Reverse Proxy Image
+              uses: docker/build-push-action@v6
+              with:
+                context: ${{ github.workspace }}/src/nginx-proxy
+                file: ${{ github.workspace }}/src/nginx-proxy/Dockerfile
+                push: true
+                tags: khutsokobela/cross-dsp-proxy:latest
+                platforms: linux/amd64,linux/arm64
+
             - name: Build Backend App Image
               uses: docker/build-push-action@v6
               with:
