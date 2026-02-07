@@ -73,11 +73,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-else
-{
-    //Production only middleware
-    app.UseHttpsRedirection();
-}
 
 
 app.UseCors(WebAppConstants.AllowCrossDSPFrontEndPolicy);
